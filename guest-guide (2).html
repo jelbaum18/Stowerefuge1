@@ -469,8 +469,7 @@
   .leaflet-control-zoom a { background: var(--brown) !important; color: var(--cream) !important; border-color: rgba(255,255,255,0.15) !important; }
 
   /* ── TRIP PLANNER SECTION ── */
-  #planner-section { padding-top: 0 !important; }
-  #planner-section.active { display: block !important; }
+  #planner-section { padding-top: 0; }
   .planner-wrap { max-width: 680px; margin: 0 auto; padding: 32px 20px 60px; }
   .planner-step { margin-bottom: 26px; }
   .planner-step-label { font-size: 10px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--terracotta); margin-bottom: 8px; display: block; }
@@ -1084,84 +1083,93 @@
     </div>
   </div>
 
-  <!-- PLANNER SECTION -->
-  <div id="planner-section" class="section planner-section-el">
-    <div class="planner-wrap">
-      <div id="planner-form">
-        <div class="planner-step">
-          <span class="planner-step-label">Step 01</span>
-          <div class="planner-step-title">How many nights are you staying?</div>
-          <div class="p-stepper">
-            <button onclick="pChangeNights(-1)">−</button>
-            <span id="p-nights">3</span>
-            <button onclick="pChangeNights(1)">+</button>
-          </div>
-        </div>
-        <div class="planner-step">
-          <span class="planner-step-label">Step 02</span>
-          <div class="planner-step-title">When are you visiting?</div>
-          <div class="p-season-grid">
-            <div class="p-season-card selected" data-season="winter" onclick="pSelectSeason(this)"><span class="ps-emoji">⛷️</span><div><div class="ps-title">Winter</div><div class="ps-desc">Dec – Mar · Skiing, snowshoeing</div></div></div>
-            <div class="p-season-card" data-season="summer" onclick="pSelectSeason(this)"><span class="ps-emoji">☀️</span><div><div class="ps-title">Summer</div><div class="ps-desc">Jun – Sep · Hiking, biking</div></div></div>
-            <div class="p-season-card" data-season="fall" onclick="pSelectSeason(this)"><span class="ps-emoji">🍂</span><div><div class="ps-title">Fall</div><div class="ps-desc">Sep – Nov · Foliage, hiking</div></div></div>
-            <div class="p-season-card" data-season="spring" onclick="pSelectSeason(this)"><span class="ps-emoji">🌱</span><div><div class="ps-title">Spring</div><div class="ps-desc">Apr – May · Mud season magic</div></div></div>
-          </div>
-        </div>
-        <div class="planner-step">
-          <span class="planner-step-label">Step 03</span>
-          <div class="planner-step-title">What are you into? Pick all that apply.</div>
-          <div class="p-chips">
-            <div class="p-chip selected" data-interest="skiing" onclick="this.classList.toggle('selected')">⛷️ Skiing</div>
-            <div class="p-chip" data-interest="hiking" onclick="this.classList.toggle('selected')">🥾 Hiking</div>
-            <div class="p-chip" data-interest="mountain biking" onclick="this.classList.toggle('selected')">🚵 Mountain Biking</div>
-            <div class="p-chip" data-interest="food and restaurants" onclick="this.classList.toggle('selected')">🍽️ Food & Restaurants</div>
-            <div class="p-chip" data-interest="bars and nightlife" onclick="this.classList.toggle('selected')">🍹 Bars</div>
-            <div class="p-chip" data-interest="breweries" onclick="this.classList.toggle('selected')">🍺 Breweries</div>
-            <div class="p-chip" data-interest="relaxing and cozy" onclick="this.classList.toggle('selected')">🛋️ Relaxing</div>
-            <div class="p-chip" data-interest="nordic skiing or snowshoeing" onclick="this.classList.toggle('selected')">🏃 Nordic / Snowshoe</div>
-            <div class="p-chip" data-interest="exploring local Vermont" onclick="this.classList.toggle('selected')">🗺️ Exploring Vermont</div>
-            <div class="p-chip" data-interest="shopping and browsing" onclick="this.classList.toggle('selected')">🛍️ Shopping</div>
-          </div>
-        </div>
-        <div class="planner-step">
-          <span class="planner-step-label">Step 04</span>
-          <div class="planner-step-title">Who's coming?</div>
-          <div class="p-chips">
-            <div class="p-chip selected" data-group="couple" onclick="pSelectGroup(this)">👫 Couple</div>
-            <div class="p-chip" data-group="family with kids" onclick="pSelectGroup(this)">👨‍👩‍👧 Family</div>
-            <div class="p-chip" data-group="group of friends" onclick="pSelectGroup(this)">👯 Friend Group</div>
-            <div class="p-chip" data-group="solo traveler" onclick="pSelectGroup(this)">🧍 Solo</div>
-          </div>
-        </div>
-        <div class="planner-step">
-          <span class="planner-step-label">Step 05</span>
-          <div class="planner-step-title">Anything else Jeff should know?</div>
-          <textarea id="p-notes" placeholder="e.g. celebrating a birthday, first time in Vermont, vegetarian, want to avoid crowds…"
-            style="width:100%;padding:13px 15px;border:1.5px solid var(--border);border-radius:12px;font-family:'Lato',sans-serif;font-size:13.5px;font-weight:300;color:var(--text);background:white;resize:vertical;min-height:76px;outline:none;transition:border-color 0.2s;"
-            onfocus="this.style.borderColor='var(--terracotta)'" onblur="this.style.borderColor='var(--border)'"></textarea>
-        </div>
-        <button class="p-submit" onclick="pGenerate()">✦ &nbsp; Build My Itinerary</button>
-      </div>
-
-      <div class="p-loading" id="p-loading">
-        <div class="p-dots"><span></span><span></span><span></span></div>
-        <div class="p-loading-text">Planning your perfect Stowe escape…</div>
-        <div class="p-loading-sub">Pulling from Indy's local knowledge</div>
-      </div>
-
-      <div class="p-result" id="p-result">
-        <div class="p-result-header">
-          <div class="p-result-badge">✦ Your Custom Itinerary</div>
-          <div class="p-result-title" id="p-res-title"></div>
-          <div class="p-result-sub" id="p-res-sub"></div>
-          <button class="p-edit-btn" onclick="pReset()">← Edit</button>
-        </div>
-        <div id="p-days"></div>
-      </div>
-    </div>
-  </div>
-
 </div>
+</div>
+<!-- PLANNER SECTION -->
+<div id="planner-section" style="display:none;background:#F5EFE6;">
+  <div style="max-width:860px;margin:0 auto;padding:32px 20px 60px;">
+
+    <div id="planner-form">
+
+      <div class="planner-step">
+        <span class="planner-step-label">Step 01</span>
+        <div class="planner-step-title">How many nights are you staying?</div>
+        <div class="p-stepper">
+          <button onclick="pChangeNights(-1)">−</button>
+          <span id="p-nights">3</span>
+          <button onclick="pChangeNights(1)">+</button>
+        </div>
+      </div>
+
+      <div class="planner-step">
+        <span class="planner-step-label">Step 02</span>
+        <div class="planner-step-title">When are you visiting?</div>
+        <div class="p-season-grid">
+          <div class="p-season-card selected" data-season="winter" onclick="pSelectSeason(this)"><span class="ps-emoji">⛷️</span><div><div class="ps-title">Winter</div><div class="ps-desc">Dec – Mar · Skiing, snowshoeing</div></div></div>
+          <div class="p-season-card" data-season="summer" onclick="pSelectSeason(this)"><span class="ps-emoji">☀️</span><div><div class="ps-title">Summer</div><div class="ps-desc">Jun – Sep · Hiking, biking</div></div></div>
+          <div class="p-season-card" data-season="fall" onclick="pSelectSeason(this)"><span class="ps-emoji">🍂</span><div><div class="ps-title">Fall</div><div class="ps-desc">Sep – Nov · Foliage, hiking</div></div></div>
+          <div class="p-season-card" data-season="spring" onclick="pSelectSeason(this)"><span class="ps-emoji">🌱</span><div><div class="ps-title">Spring</div><div class="ps-desc">Apr – May · Mud season magic</div></div></div>
+        </div>
+      </div>
+
+      <div class="planner-step">
+        <span class="planner-step-label">Step 03</span>
+        <div class="planner-step-title">What are you into? Pick all that apply.</div>
+        <div class="p-chips">
+          <div class="p-chip selected" data-interest="skiing" onclick="this.classList.toggle('selected')">⛷️ Skiing</div>
+          <div class="p-chip" data-interest="hiking" onclick="this.classList.toggle('selected')">🥾 Hiking</div>
+          <div class="p-chip" data-interest="mountain biking" onclick="this.classList.toggle('selected')">🚵 Mountain Biking</div>
+          <div class="p-chip" data-interest="food and restaurants" onclick="this.classList.toggle('selected')">🍽️ Food &amp; Restaurants</div>
+          <div class="p-chip" data-interest="bars and nightlife" onclick="this.classList.toggle('selected')">🍹 Bars</div>
+          <div class="p-chip" data-interest="breweries" onclick="this.classList.toggle('selected')">🍺 Breweries</div>
+          <div class="p-chip" data-interest="relaxing and cozy" onclick="this.classList.toggle('selected')">🛋️ Relaxing</div>
+          <div class="p-chip" data-interest="nordic skiing or snowshoeing" onclick="this.classList.toggle('selected')">🏃 Nordic / Snowshoe</div>
+          <div class="p-chip" data-interest="exploring local Vermont" onclick="this.classList.toggle('selected')">🗺️ Exploring Vermont</div>
+          <div class="p-chip" data-interest="shopping and browsing" onclick="this.classList.toggle('selected')">🛍️ Shopping</div>
+        </div>
+      </div>
+
+      <div class="planner-step">
+        <span class="planner-step-label">Step 04</span>
+        <div class="planner-step-title">Who's coming?</div>
+        <div class="p-chips">
+          <div class="p-chip selected" data-group="couple" onclick="pSelectGroup(this)">👫 Couple</div>
+          <div class="p-chip" data-group="family with kids" onclick="pSelectGroup(this)">👨‍👩‍👧 Family</div>
+          <div class="p-chip" data-group="group of friends" onclick="pSelectGroup(this)">👯 Friend Group</div>
+          <div class="p-chip" data-group="solo traveler" onclick="pSelectGroup(this)">🧍 Solo</div>
+        </div>
+      </div>
+
+      <div class="planner-step">
+        <span class="planner-step-label">Step 05</span>
+        <div class="planner-step-title">Anything else Jeff should know?</div>
+        <textarea id="p-notes" placeholder="e.g. celebrating a birthday, first time in Vermont, vegetarian…"
+          style="width:100%;padding:13px 15px;border:1.5px solid rgba(44,58,71,0.12);border-radius:12px;font-family:Lato,sans-serif;font-size:13.5px;font-weight:300;color:#1E2B36;background:white;resize:vertical;min-height:76px;outline:none;"></textarea>
+      </div>
+
+      <button class="p-submit" onclick="pGenerate()">✦ &nbsp; Build My Itinerary</button>
+
+    </div>
+
+    <div class="p-loading" id="p-loading">
+      <div class="p-dots"><span></span><span></span><span></span></div>
+      <div class="p-loading-text">Planning your perfect Stowe escape…</div>
+      <div class="p-loading-sub">Pulling from Indy's local knowledge</div>
+    </div>
+
+    <div class="p-result" id="p-result">
+      <div class="p-result-header">
+        <div class="p-result-badge">✦ Your Custom Itinerary</div>
+        <div class="p-result-title" id="p-res-title"></div>
+        <div class="p-result-sub" id="p-res-sub"></div>
+        <button class="p-edit-btn" onclick="pReset()">← Edit</button>
+      </div>
+      <div id="p-days"></div>
+    </div>
+
+  </div>
+</div>
+
 <div class="footer">
   <span>Have a wonderful stay ✦</span><br>
   <span style="font-family:Lato,sans-serif;font-style:normal;font-size:12px;color:rgba(239,246,243,0.35);">From Indy & Jeff — we're so glad you're here.</span>
@@ -1174,13 +1182,19 @@
   function showSection(id, btn) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
     btn.classList.add('active');
-    window.scrollTo({ top: 0 });
-    if (id === 'map-section') {
-      if (!mapInitialized) { initMap(); mapInitialized = true; }
-      else { setTimeout(() => theMap.invalidateSize(), 100); }
+    const planner = document.getElementById('planner-section');
+    planner.style.display = 'none';
+    if (id === 'planner-section') {
+      planner.style.display = 'block';
+    } else {
+      document.getElementById(id).classList.add('active');
+      if (id === 'map-section') {
+        if (!mapInitialized) { initMap(); mapInitialized = true; }
+        else { setTimeout(() => theMap.invalidateSize(), 100); }
+      }
     }
+    window.scrollTo({ top: 0 });
   }
 
   // ── MAP ──
@@ -1279,6 +1293,7 @@
     document.getElementById('planner-form').style.display = 'block';
     document.getElementById('p-result').classList.remove('visible');
     document.getElementById('p-loading').classList.remove('visible');
+    window.scrollTo({ top: 0 });
   }
 
   async function pGenerate() {
