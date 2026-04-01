@@ -422,18 +422,18 @@
   #the-map { width: 100%; height: 100%; }
   .map-filters {
     display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none;
-    padding: 10px 16px; background: var(--brown);
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 10px 16px; background: var(--warm-white);
+    border-bottom: 1px solid var(--border);
   }
   .map-filters::-webkit-scrollbar { display: none; }
   .map-filter-pill {
     flex-shrink: 0; padding: 5px 12px; border-radius: 999px;
-    border: 1.5px solid rgba(255,255,255,0.15); font-size: 11px; font-weight: 700;
+    border: 1.5px solid var(--border); font-size: 11px; font-weight: 700;
     letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
-    transition: all 0.2s; color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.05);
+    transition: all 0.2s; color: var(--text-light); background: white;
     font-family: 'Lato', sans-serif;
   }
-  .map-filter-pill:hover { color: #fff; border-color: rgba(255,255,255,0.3); }
+  .map-filter-pill:hover { border-color: var(--terracotta); color: var(--brown); }
   .map-filter-pill.active { color: #fff; }
   .map-filter-pill[data-cat="all"].active { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.4); }
   .map-filter-pill[data-cat="breakfast"].active { background: #E8963A; border-color: #E8963A; }
@@ -468,64 +468,6 @@
   .leaflet-control-attribution { display: none !important; }
   .leaflet-control-zoom a { background: var(--brown) !important; color: var(--cream) !important; border-color: rgba(255,255,255,0.15) !important; }
 
-  /* ── TRIP PLANNER SECTION ── */
-  #planner-section { padding-top: 0; }
-  .planner-wrap { max-width: 680px; margin: 0 auto; padding: 32px 20px 60px; }
-  .planner-step { margin-bottom: 26px; }
-  .planner-step-label { font-size: 10px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--terracotta); margin-bottom: 8px; display: block; }
-  .planner-step-title { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-style: italic; color: var(--brown); margin-bottom: 10px; }
-  .p-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-  .p-chip { padding: 7px 15px; border-radius: 999px; border: 1.5px solid var(--border); background: white; font-family: 'Lato', sans-serif; font-size: 13px; font-weight: 400; color: var(--text-light); cursor: pointer; transition: all 0.18s; user-select: none; }
-  .p-chip:hover { border-color: var(--terracotta); color: var(--brown); }
-  .p-chip.selected { background: var(--brown); border-color: var(--brown); color: var(--cream); }
-  .p-stepper { display: flex; align-items: center; background: white; border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; width: fit-content; }
-  .p-stepper button { width: 42px; height: 42px; background: none; border: none; font-size: 20px; color: var(--brown); cursor: pointer; transition: background 0.15s; font-weight: 300; }
-  .p-stepper button:hover { background: var(--warm-white); }
-  .p-stepper span { width: 52px; text-align: center; font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-style: italic; color: var(--brown); border-left: 1px solid var(--border); border-right: 1px solid var(--border); line-height: 42px; }
-  .p-season-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .p-season-card { background: white; border: 1.5px solid var(--border); border-radius: 14px; padding: 14px 16px; cursor: pointer; transition: all 0.18s; display: flex; align-items: center; gap: 10px; }
-  .p-season-card:hover { border-color: var(--terracotta); }
-  .p-season-card.selected { background: var(--brown); border-color: var(--brown); }
-  .p-season-card.selected .ps-title { color: var(--cream); }
-  .p-season-card.selected .ps-desc { color: rgba(245,239,230,0.55); }
-  .ps-emoji { font-size: 22px; }
-  .ps-title { font-size: 13px; font-weight: 700; color: var(--brown); margin-bottom: 1px; }
-  .ps-desc { font-size: 11px; color: var(--text-light); }
-  .p-submit { width: 100%; padding: 15px; background: var(--brown); color: var(--cream); border: none; border-radius: 14px; font-family: 'Lato', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; margin-top: 6px; }
-  .p-submit:hover { background: var(--brown-light); }
-  .p-submit:disabled { opacity: 0.6; cursor: not-allowed; }
-  .p-loading { text-align: center; padding: 48px 24px; display: none; }
-  .p-loading.visible { display: block; }
-  .p-dots { display: flex; justify-content: center; gap: 8px; margin-bottom: 14px; }
-  .p-dots span { width: 10px; height: 10px; border-radius: 50%; background: var(--terracotta); animation: pbounce 1.2s infinite; }
-  .p-dots span:nth-child(2) { animation-delay: 0.2s; }
-  .p-dots span:nth-child(3) { animation-delay: 0.4s; }
-  @keyframes pbounce { 0%,80%,100%{transform:scale(0.7);opacity:0.5} 40%{transform:scale(1);opacity:1} }
-  .p-loading-text { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-style: italic; color: var(--brown); margin-bottom: 4px; }
-  .p-loading-sub { font-size: 12px; color: var(--text-light); }
-  .p-result { display: none; }
-  .p-result.visible { display: block; }
-  .p-result-header { background: var(--brown); border-radius: 16px; padding: 22px 26px; margin-bottom: 18px; position: relative; overflow: hidden; }
-  .p-result-header::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse 80% 60% at 20% 50%, rgba(122,158,142,0.2), transparent 60%); }
-  .p-result-badge { position:relative; font-size:9px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:#6ABFAA; margin-bottom:5px; }
-  .p-result-title { position:relative; font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-style:italic; color:var(--cream); margin-bottom:3px; }
-  .p-result-sub { position:relative; font-size:12px; color:rgba(245,239,230,0.5); }
-  .p-edit-btn { position:absolute; top:18px; right:18px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.7); font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:6px 13px; border-radius:999px; cursor:pointer; transition:all 0.2s; font-family:'Lato',sans-serif; }
-  .p-edit-btn:hover { background:rgba(255,255,255,0.2); color:#fff; }
-  .p-day-card { background:white; border:1px solid var(--border); border-radius:16px; overflow:hidden; margin-bottom:14px; }
-  .p-day-header { background:var(--warm-white); padding:13px 20px; display:flex; align-items:center; gap:12px; border-bottom:1px solid var(--border); }
-  .p-day-num { font-family:'Cormorant Garamond',serif; font-size:1.7rem; font-style:italic; color:var(--terracotta); line-height:1; min-width:32px; }
-  .p-day-title { font-size:13.5px; font-weight:700; color:var(--brown); margin-bottom:1px; }
-  .p-day-sub { font-size:11.5px; color:var(--text-light); }
-  .p-day-body { padding:16px 20px; }
-  .p-time-block { display:flex; gap:12px; padding:9px 0; border-bottom:1px solid rgba(44,58,71,0.07); }
-  .p-time-block:last-child { border-bottom:none; }
-  .p-time-label { font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--terracotta); min-width:56px; padding-top:2px; }
-  .p-time-content { flex:1; }
-  .p-time-place { font-size:13.5px; font-weight:700; color:var(--brown); margin-bottom:2px; }
-  .p-time-desc { font-size:13px; color:var(--text-light); line-height:1.65; }
-  .p-time-tip { display:inline-block; margin-top:4px; font-size:11px; color:var(--terracotta); font-style:italic; }
-  @media (max-width:520px) { .p-season-grid { grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
@@ -583,8 +525,8 @@
     <button class="nav-btn" onclick="showSection('rules', this)">House Rules</button>
     <button class="nav-btn" onclick="showSection('local', this)">Eats & Activities</button>
     <button class="nav-btn" onclick="showSection('emergency', this)">Emergency</button>
-    <button class="nav-btn" onclick="showSection('map-section', this)">🗺️ Map</button>
-    <button class="nav-btn" onclick="showSection('planner-section', this)">🗓️ Trip Planner</button>
+    <button class="nav-btn" onclick="showSection('map-section', this)">Map</button>
+
   </nav>
 </div>
 
@@ -604,7 +546,7 @@
         <div>
           <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage);margin-bottom:4px;">Check-in</div>
           <div style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--brown);font-weight:600;">3:00 PM</div>
-          <div style="font-size:12px;color:var(--text-light);margin-top:2px;">…but you're probably already here 😄</div>
+
         </div>
         <div>
           <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage);margin-bottom:4px;">Check-out</div>
@@ -712,7 +654,7 @@
     </div>
 
     <div class="highlight" style="margin-bottom:20px;">
-      <p style="font-size:14px;color:var(--text-light);font-style:italic;">Please enjoy a rotating selection of Indy's favorite candies in the bowl under the mirror. You will <em>not</em> find dark chocolate or peppermints — we only stock good candies. 🍬</p>
+      <p style="font-size:14px;color:var(--text-light);font-style:italic;">Please enjoy a rotating selection of Indy's favorite candies in the bowl under the mirror.</p>
     </div>
 
     <div class="grid-2">
@@ -740,7 +682,7 @@
       <div class="card">
         <div class="card-label">Front Yard</div>
         <h3>Your Private Space</h3>
-        <p>The front yard is your private space — feel free to play games, lounge, or have dinner and drinks outside. The backyard behind the garages is off-limits (used by other apartments).</p>
+        <p>The front yard is your private space — feel free to play games, lounge, or have dinner and drinks outside. Please do not use the backyard behind the garages as that is reserved for other apartments.</p>
       </div>
     </div>
 
@@ -1085,90 +1027,7 @@
 
 </div>
 </div>
-<!-- PLANNER SECTION -->
-<div id="planner-section" style="display:none;background:#F5EFE6;">
-  <div style="max-width:860px;margin:0 auto;padding:32px 20px 60px;">
 
-    <div id="planner-form">
-
-      <div class="planner-step">
-        <span class="planner-step-label">Step 01</span>
-        <div class="planner-step-title">How many nights are you staying?</div>
-        <div class="p-stepper">
-          <button onclick="pChangeNights(-1)">−</button>
-          <span id="p-nights">3</span>
-          <button onclick="pChangeNights(1)">+</button>
-        </div>
-      </div>
-
-      <div class="planner-step">
-        <span class="planner-step-label">Step 02</span>
-        <div class="planner-step-title">When are you visiting?</div>
-        <div class="p-season-grid">
-          <div class="p-season-card selected" data-season="winter" onclick="pSelectSeason(this)"><span class="ps-emoji">⛷️</span><div><div class="ps-title">Winter</div><div class="ps-desc">Dec – Mar · Skiing, snowshoeing</div></div></div>
-          <div class="p-season-card" data-season="summer" onclick="pSelectSeason(this)"><span class="ps-emoji">☀️</span><div><div class="ps-title">Summer</div><div class="ps-desc">Jun – Sep · Hiking, biking</div></div></div>
-          <div class="p-season-card" data-season="fall" onclick="pSelectSeason(this)"><span class="ps-emoji">🍂</span><div><div class="ps-title">Fall</div><div class="ps-desc">Sep – Nov · Foliage, hiking</div></div></div>
-          <div class="p-season-card" data-season="spring" onclick="pSelectSeason(this)"><span class="ps-emoji">🌱</span><div><div class="ps-title">Spring</div><div class="ps-desc">Apr – May · Mud season magic</div></div></div>
-        </div>
-      </div>
-
-      <div class="planner-step">
-        <span class="planner-step-label">Step 03</span>
-        <div class="planner-step-title">What are you into? Pick all that apply.</div>
-        <div class="p-chips">
-          <div class="p-chip selected" data-interest="skiing" onclick="this.classList.toggle('selected')">⛷️ Skiing</div>
-          <div class="p-chip" data-interest="hiking" onclick="this.classList.toggle('selected')">🥾 Hiking</div>
-          <div class="p-chip" data-interest="mountain biking" onclick="this.classList.toggle('selected')">🚵 Mountain Biking</div>
-          <div class="p-chip" data-interest="food and restaurants" onclick="this.classList.toggle('selected')">🍽️ Food &amp; Restaurants</div>
-          <div class="p-chip" data-interest="bars and nightlife" onclick="this.classList.toggle('selected')">🍹 Bars</div>
-          <div class="p-chip" data-interest="breweries" onclick="this.classList.toggle('selected')">🍺 Breweries</div>
-          <div class="p-chip" data-interest="relaxing and cozy" onclick="this.classList.toggle('selected')">🛋️ Relaxing</div>
-          <div class="p-chip" data-interest="nordic skiing or snowshoeing" onclick="this.classList.toggle('selected')">🏃 Nordic / Snowshoe</div>
-          <div class="p-chip" data-interest="exploring local Vermont" onclick="this.classList.toggle('selected')">🗺️ Exploring Vermont</div>
-          <div class="p-chip" data-interest="shopping and browsing" onclick="this.classList.toggle('selected')">🛍️ Shopping</div>
-        </div>
-      </div>
-
-      <div class="planner-step">
-        <span class="planner-step-label">Step 04</span>
-        <div class="planner-step-title">Who's coming?</div>
-        <div class="p-chips">
-          <div class="p-chip selected" data-group="couple" onclick="pSelectGroup(this)">👫 Couple</div>
-          <div class="p-chip" data-group="family with kids" onclick="pSelectGroup(this)">👨‍👩‍👧 Family</div>
-          <div class="p-chip" data-group="group of friends" onclick="pSelectGroup(this)">👯 Friend Group</div>
-          <div class="p-chip" data-group="solo traveler" onclick="pSelectGroup(this)">🧍 Solo</div>
-        </div>
-      </div>
-
-      <div class="planner-step">
-        <span class="planner-step-label">Step 05</span>
-        <div class="planner-step-title">Anything else Jeff should know?</div>
-        <textarea id="p-notes" placeholder="e.g. celebrating a birthday, first time in Vermont, vegetarian…"
-          style="width:100%;padding:13px 15px;border:1.5px solid rgba(44,58,71,0.12);border-radius:12px;font-family:Lato,sans-serif;font-size:13.5px;font-weight:300;color:#1E2B36;background:white;resize:vertical;min-height:76px;outline:none;"></textarea>
-      </div>
-
-      <button class="p-submit" onclick="pGenerate()">✦ &nbsp; Build My Itinerary</button>
-
-    </div>
-
-    <div class="p-loading" id="p-loading">
-      <div class="p-dots"><span></span><span></span><span></span></div>
-      <div class="p-loading-text">Planning your perfect Stowe escape…</div>
-      <div class="p-loading-sub">Pulling from Indy's local knowledge</div>
-    </div>
-
-    <div class="p-result" id="p-result">
-      <div class="p-result-header">
-        <div class="p-result-badge">✦ Your Custom Itinerary</div>
-        <div class="p-result-title" id="p-res-title"></div>
-        <div class="p-result-sub" id="p-res-sub"></div>
-        <button class="p-edit-btn" onclick="pReset()">← Edit</button>
-      </div>
-      <div id="p-days"></div>
-    </div>
-
-  </div>
-</div>
 
 <div class="footer">
   <span>Have a wonderful stay ✦</span><br>
@@ -1182,19 +1041,13 @@
   function showSection(id, btn) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
     btn.classList.add('active');
-    const planner = document.getElementById('planner-section');
-    planner.style.display = 'none';
-    if (id === 'planner-section') {
-      planner.style.display = 'block';
-    } else {
-      document.getElementById(id).classList.add('active');
-      if (id === 'map-section') {
-        if (!mapInitialized) { initMap(); mapInitialized = true; }
-        else { setTimeout(() => theMap.invalidateSize(), 100); }
-      }
-    }
     window.scrollTo({ top: 0 });
+    if (id === 'map-section') {
+      if (!mapInitialized) { initMap(); mapInitialized = true; }
+      else { setTimeout(() => theMap.invalidateSize(), 100); }
+    }
   }
 
   // ── MAP ──
@@ -1272,7 +1125,7 @@
 
   function initMap() {
     theMap = L.map('the-map', { center:[44.4830,-72.6616], zoom:14 });
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { subdomains:'abcd', maxZoom:19 }).addTo(theMap);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { subdomains:'abcd', maxZoom:19 }).addTo(theMap);
     PLACES.forEach(place => {
       const marker = L.marker([place.lat, place.lng], { icon: makeMIcon(place.cat) }).addTo(theMap);
       marker.on('click', () => openMapPanel(place));
@@ -1282,97 +1135,7 @@
     setTimeout(() => { theMap.invalidateSize(); }, 200);
   }
 
-  // ── TRIP PLANNER ──
-  let pNights = 3, pSeason = 'winter';
 
-  function pChangeNights(d) { pNights = Math.max(1, Math.min(7, pNights + d)); document.getElementById('p-nights').textContent = pNights; }
-  function pSelectSeason(el) { document.querySelectorAll('.p-season-card').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); pSeason = el.dataset.season; }
-  function pSelectGroup(el) { document.querySelectorAll('.p-chip[data-group]').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); }
-
-  function pReset() {
-    document.getElementById('planner-form').style.display = 'block';
-    document.getElementById('p-result').classList.remove('visible');
-    document.getElementById('p-loading').classList.remove('visible');
-    window.scrollTo({ top: 0 });
-  }
-
-  async function pGenerate() {
-    const interests = [...document.querySelectorAll('.p-chip[data-interest].selected')].map(c => c.dataset.interest);
-    const groupEl = document.querySelector('.p-chip[data-group].selected');
-    const group = groupEl ? groupEl.dataset.group : 'couple';
-    const notes = document.getElementById('p-notes').value;
-    if (!interests.length) { alert('Please select at least one interest!'); return; }
-
-    document.getElementById('planner-form').style.display = 'none';
-    document.getElementById('p-loading').classList.add('visible');
-
-    const prompt = `You are Jeff, the host of Stowe Refuge — a cozy Airbnb in Stowe, Vermont. Create a personalized day-by-day itinerary for guests:
-- Nights: ${pNights}
-- Season: ${pSeason}
-- Interests: ${interests.join(', ')}
-- Group: ${group}
-- Notes: ${notes || 'none'}
-
-Use ONLY these real Stowe places Jeff personally recommends:
-BREAKFAST: The Roastery (best coffee, across the street, grab & go), Butler's Pantry (best sit-down, biscuit french toast, join Yelp waitlist), Woodland Cafe (locals coffee, good pastries), Round Hearth (indoor fire pit, bottomless coffee, great after skiing), Cold Hollow Cider Mill (15 min, egg sandwich cheddar biscuit maple mayo, cider donuts), Trapp Family Lodge Kaffehaus (skip buffet, sit outside in summer)
-LUNCH: Piecasso (2 slices + soda $8.50), Aladdin (best falafel, lunch only, looks closed when open), Ranch Camp (crunchwrap, bike rentals, next to Cady Hill), Avocado Pit (quick burritos, online ordering), Green Goddess (smoothies, salads, low key)
-DINNER: Doc Ponds (upscale bar bites, Yelp waitlist, nightly specials), Bench (pizza, veggie burger, skillet cookie), American Flatbread (inventive pizzas, great specials), Shakedown Street (Stowe Cider BBQ, live music), Salt and Rind (seafood, Waterbury 15-20 min)
-SPECIAL DINNER: Edson Hill (Stowe's best, reservations, tavern walk-in), Gallus (homemade pasta, old mill Waterbury), Hen of the Wood (famous Vermont restaurant, mushroom toast)
-BARS: Apres (best cocktails), Burt's (real locals), Matterhorn (ski bar scene), Alfie's (accidentally go to a rave), Whistlepig Pavilion (best upscale apres ski)
-WINTER: Stowe Mountain Resort (12-15 min, $30 parking Fri-Sun, take shuttle from Toll House), Trapp Nordic (10 min, trails+rentals, rustic cabin 3mi), Craftsbury Outdoor Center (hidden gem, flatter, less touristy), backcountry at Sterling Forest and Nebraska Valley
-SUMMER: Stowe Rec Path (5 miles paved, bike rentals AJ's or Mountain Ops), Cady Hill mountain biking (Ranch Camp rentals), Mount Mansfield (strenuous, amazing views, bring layers), Moss Glen Falls (easy waterfall hike), Lamoille Valley Rail Trail (hop on at Oxbow Park Morrisville)
-RAINY DAY: Stowe Ski Museum (5 min), Cold Hollow Cider Mill (crushee=maple creemee+cider slushy, maple shortbread, cider tasting), Church Street Burlington (45 min), Alchemist + Ten Bends + Foam + Four Quarters breweries
-HIDDEN GEMS: Craftsbury Genny + Village Diner (hashes are best), Lake Elmore + Elmore Store (renovated, good food, fire tower hike), Burlington: Honey Road, May Day, Santiago's, Pho Hong (BYOB Vietnamese)
-
-Respond ONLY with valid JSON, no markdown, no backticks:
-{"title":"catchy 4-6 word trip title","subtitle":"one sentence description","days":[{"day":1,"theme":"evocative day theme","subtitle":"one line day description","schedule":[{"time":"Morning","place":"Place Name","desc":"2-3 sentences in Jeff's warm personal voice with specific tips like what to order","tip":"one quick insider tip or null"}]}]}
-Time slots: Morning, Midday, Afternoon, Evening, Night (3-5 slots per day). Make each day distinct. Write like a knowledgeable friend.`;
-
-    try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:4000, messages:[{role:'user',content:prompt}] })
-      });
-      const data = await res.json();
-      const text = data.content.map(i => i.text||'').join('');
-      const plan = JSON.parse(text.replace(/```json|```/g,'').trim());
-      document.getElementById('p-loading').classList.remove('visible');
-      pRenderPlan(plan);
-    } catch(err) {
-      document.getElementById('p-loading').classList.remove('visible');
-      document.getElementById('planner-form').style.display = 'block';
-      alert('Something went wrong — please try again!');
-    }
-  }
-
-  function pRenderPlan(plan) {
-    document.getElementById('p-res-title').textContent = plan.title;
-    document.getElementById('p-res-sub').textContent = plan.subtitle;
-    const container = document.getElementById('p-days');
-    container.innerHTML = '';
-    plan.days.forEach(day => {
-      const card = document.createElement('div');
-      card.className = 'p-day-card';
-      const schedule = day.schedule.map(s => `
-        <div class="p-time-block">
-          <div class="p-time-label">${s.time}</div>
-          <div class="p-time-content">
-            <div class="p-time-place">${s.place}</div>
-            <div class="p-time-desc">${s.desc}</div>
-            ${s.tip ? `<span class="p-time-tip">💡 ${s.tip}</span>` : ''}
-          </div>
-        </div>`).join('');
-      card.innerHTML = `
-        <div class="p-day-header">
-          <div class="p-day-num">${day.day}</div>
-          <div><div class="p-day-title">${day.theme}</div><div class="p-day-sub">${day.subtitle}</div></div>
-        </div>
-        <div class="p-day-body">${schedule}</div>`;
-      container.appendChild(card);
-    });
-    document.getElementById('p-result').classList.add('visible');
-    document.querySelector('.content').scrollIntoView({ behavior:'smooth', block:'start' });
-  }
 </script>
 
 </body>
