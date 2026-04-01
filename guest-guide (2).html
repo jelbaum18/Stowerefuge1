@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Guest Guide — Stowe Refuge</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400;700&family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  :root {
+    --cream: #F5EFE6;
+    --warm-white: #EEF4F1;
+    --terracotta: #7A9E8E;
+    --terracotta-light: #A0BDB1;
+    --brown: #2C3A47;
+    --brown-light: #3D5A4F;
+    --gold: #C4A882;
+    --gold-light: #E8CBA0;
+    --sage: #7A9E8E;
+    --text: #1E2B36;
+    --text-light: #3D5A4F;
+    --border: rgba(44,58,71,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--text);
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    background: var(--brown);
+    min-height: 340px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 24px 50px;
+    overflow: hidden;
+  }
+
+  .hero::before { display: none; }
+
+  .hero-badge {
+    position: relative;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.2s forwards;
+  }
+
+  .hero h1 {
+    position: relative;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 7vw, 4.6rem);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--cream);
+    line-height: 1.05;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.4s forwards;
+  }
+
+  .hero h1 em { font-style: italic; color: #EFF6F3; }
+
+  .hero-sub {
+    position: relative;
+    font-size: 15px;
+    color: rgba(250,246,240,0.65);
+    letter-spacing: 0.5px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.6s forwards;
+  }
+
+  .hero-divider {
+    position: relative;
+    width: 48px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--terracotta-light), var(--gold-light));
+    margin: 20px auto 0;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.8s forwards;
+  }
+
+  /* NAV */
+  .nav-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--warm-white);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 2px 12px rgba(44,58,71,0.07);
+  }
+
+  .nav {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .nav::-webkit-scrollbar { display: none; }
+
+  .nav-btn {
+    flex-shrink: 0;
+    padding: 14px 18px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    font-family: 'Lato', sans-serif;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .nav-btn:hover { color: var(--terracotta); }
+  .nav-btn.active { color: var(--terracotta); border-bottom-color: var(--terracotta); }
+
+  /* CONTENT */
+  .content {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+  }
+
+  .section {
+    display: none;
+    padding-top: 44px;
+    animation: fadeIn 0.35s ease;
+  }
+
+  .section.active { display: block; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .section-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--terracotta), var(--gold));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(122,158,142,0.3);
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--brown);
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 16px;
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: 0 4px 20px rgba(92,61,46,0.09); }
+
+  .card-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 6px;
+  }
+
+  .card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--brown);
+    margin-bottom: 8px;
+  }
+
+  .card p, .card li {
+    font-size: 14.5px;
+    color: var(--text-light);
+    line-height: 1.75;
+  }
+
+  .card ul { padding-left: 18px; }
+  .card ul li { margin-bottom: 4px; }
+
+  /* HIGHLIGHT */
+  .highlight {
+    background: linear-gradient(135deg, rgba(196,98,58,0.08), rgba(200,150,62,0.08));
+    border: 1px solid rgba(196,98,58,0.2);
+    border-left: 3px solid var(--terracotta);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 16px;
+  }
+
+  .highlight .label { color: var(--gold); }
+
+  /* WIFI BOX */
+  .wifi-box {
+    background: var(--brown);
+    border-radius: 16px;
+    padding: 28px;
+    color: var(--cream);
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .wifi-box::after {
+    content: '📶';
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 40px;
+    opacity: 0.15;
+  }
+
+  .wifi-box .label { color: var(--gold-light); margin-bottom: 8px; }
+  .wifi-box h3 { color: #fff; font-size: 1.1rem; margin-bottom: 12px; font-family: 'Playfair Display', serif; }
+
+  .wifi-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin-bottom: 8px;
+  }
+
+  .wifi-row:last-child { margin-bottom: 0; }
+  .wifi-row .wifi-key { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.6; }
+  .wifi-row .wifi-val { font-weight: 700; font-size: 15px; letter-spacing: 0.5px; }
+
+  /* GRID */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 560px) { .grid-2 { grid-template-columns: 1fr; } }
+
+  /* CHECKLIST */
+  .checklist { list-style: none; padding: 0; }
+
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14.5px;
+    color: var(--text-light);
+  }
+
+  .checklist li:last-child { border-bottom: none; }
+
+  .check-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--sage), #9AB488);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+    font-size: 10px;
+    color: white;
+  }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 6px;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--terracotta), var(--gold));
+    border-radius: 2px;
+  }
+
+  .timeline-item { position: relative; margin-bottom: 20px; }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 6px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--terracotta);
+    border: 2px solid var(--cream);
+    box-shadow: 0 0 0 2px var(--terracotta);
+  }
+
+  .timeline-time {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 3px;
+  }
+
+  .timeline-text { font-size: 14.5px; color: var(--text-light); }
+
+  /* RULE ROW */
+  .rule-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .rule-row:last-child { border-bottom: none; }
+  .rule-emoji { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+
+  .rule-text strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--brown);
+    margin-bottom: 2px;
+  }
+
+  .rule-text span { font-size: 13.5px; color: var(--text-light); }
+
+  /* EMERGENCY */
+  .emergency-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin-bottom: 12px;
+    transition: box-shadow 0.2s;
+  }
+
+  .emergency-card:hover { box-shadow: 0 4px 16px rgba(92,61,46,0.09); }
+
+  .emergency-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .emergency-icon.red { background: rgba(220,60,40,0.1); }
+  .emergency-icon.blue { background: rgba(50,100,200,0.1); }
+  .emergency-icon.orange { background: rgba(230,130,30,0.1); }
+  .emergency-icon.green { background: rgba(80,160,80,0.1); }
+
+  .emergency-info .name { font-weight: 700; font-size: 14.5px; color: var(--brown); }
+  .emergency-info .number { font-size: 17px; font-weight: 700; color: var(--terracotta); letter-spacing: 0.5px; }
+  .emergency-info .note { font-size: 12.5px; color: var(--text-light); }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 32px 24px;
+    background: var(--brown);
+    color: rgba(250,246,240,0.5);
+    font-size: 13px;
+    letter-spacing: 0.5px;
+  }
+
+  .footer span { color: var(--gold-light); font-style: italic; font-family: 'Playfair Display', serif; font-size: 15px; }
+
+  /* ── MAP SECTION ── */
+  #map-section { display: none; padding-top: 0 !important; width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; }
+  #map-section.active { display: flex; flex-direction: column; }
+  #map-container { width: 100%; height: calc(100vh - 118px); position: relative; }
+  #the-map { width: 100%; height: 100%; }
+  .map-filters {
+    display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none;
+    padding: 10px 16px; background: var(--brown);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .map-filters::-webkit-scrollbar { display: none; }
+  .map-filter-pill {
+    flex-shrink: 0; padding: 5px 12px; border-radius: 999px;
+    border: 1.5px solid rgba(255,255,255,0.15); font-size: 11px; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
+    transition: all 0.2s; color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.05);
+    font-family: 'Lato', sans-serif;
+  }
+  .map-filter-pill:hover { color: #fff; border-color: rgba(255,255,255,0.3); }
+  .map-filter-pill.active { color: #fff; }
+  .map-filter-pill[data-cat="all"].active { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.4); }
+  .map-filter-pill[data-cat="breakfast"].active { background: #E8963A; border-color: #E8963A; }
+  .map-filter-pill[data-cat="lunch"].active { background: #5BA88A; border-color: #5BA88A; }
+  .map-filter-pill[data-cat="dinner"].active { background: #C4623A; border-color: #C4623A; }
+  .map-filter-pill[data-cat="bars"].active { background: #7A6BAE; border-color: #7A6BAE; }
+  .map-filter-pill[data-cat="winter"].active { background: #4A8EC4; border-color: #4A8EC4; }
+  .map-filter-pill[data-cat="summer"].active { background: #6AAE4A; border-color: #6AAE4A; }
+  .map-filter-pill[data-cat="rainy"].active { background: #8E8E8E; border-color: #8E8E8E; }
+  .map-filter-pill[data-cat="gems"].active { background: #C4A82A; border-color: #C4A82A; }
+  .map-panel {
+    position: absolute; top: 10px; right: 10px; width: 290px;
+    background: var(--cream); border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3); z-index: 1000;
+    overflow: hidden; transform: translateX(310px);
+    transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    max-height: calc(100vh - 200px); display: flex; flex-direction: column;
+  }
+  .map-panel.open { transform: translateX(0); }
+  .map-panel-header { background: var(--brown); padding: 14px 18px; display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+  .map-panel-cat { font-size: 9px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 3px; }
+  .map-panel-name { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-style: italic; color: var(--cream); line-height: 1.2; }
+  .map-panel-close { background: rgba(255,255,255,0.1); border: none; color: rgba(255,255,255,0.6); width: 26px; height: 26px; border-radius: 50%; cursor: pointer; font-size: 13px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: background 0.2s; margin-top: 2px; }
+  .map-panel-close:hover { background: rgba(255,255,255,0.2); color: #fff; }
+  .map-panel-body { padding: 16px 18px; overflow-y: auto; flex: 1; }
+  .map-panel-desc { font-size: 13.5px; color: var(--text-light); line-height: 1.7; margin-bottom: 12px; }
+  .map-panel-tip { background: var(--warm-white); border-left: 3px solid var(--terracotta); border-radius: 0 8px 8px 0; padding: 9px 12px; font-size: 12px; color: var(--text-light); font-style: italic; line-height: 1.6; }
+  .custom-marker { width: 30px; height: 30px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 2px solid rgba(255,255,255,0.8); box-shadow: 0 2px 8px rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  .custom-marker .micon { transform: rotate(45deg); font-size: 12px; }
+  .home-marker { width: 36px; height: 36px; border-radius: 50%; background: #E84A4A; border: 3px solid #fff; box-shadow: 0 0 0 3px rgba(232,74,74,0.3), 0 4px 12px rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; font-size: 15px; animation: mpulse 2s infinite; }
+  @keyframes mpulse { 0%,100%{box-shadow:0 0 0 3px rgba(232,74,74,0.3),0 4px 12px rgba(0,0,0,0.4)} 50%{box-shadow:0 0 0 8px rgba(232,74,74,0.1),0 4px 12px rgba(0,0,0,0.4)} }
+  .leaflet-control-attribution { display: none !important; }
+  .leaflet-control-zoom a { background: var(--brown) !important; color: var(--cream) !important; border-color: rgba(255,255,255,0.15) !important; }
+
+  /* ── TRIP PLANNER SECTION ── */
+  #planner-section { padding-top: 0 !important; }
+  #planner-section.active { display: block !important; }
+  .planner-wrap { max-width: 680px; margin: 0 auto; padding: 32px 20px 60px; }
+  .planner-step { margin-bottom: 26px; }
+  .planner-step-label { font-size: 10px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--terracotta); margin-bottom: 8px; display: block; }
+  .planner-step-title { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-style: italic; color: var(--brown); margin-bottom: 10px; }
+  .p-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .p-chip { padding: 7px 15px; border-radius: 999px; border: 1.5px solid var(--border); background: white; font-family: 'Lato', sans-serif; font-size: 13px; font-weight: 400; color: var(--text-light); cursor: pointer; transition: all 0.18s; user-select: none; }
+  .p-chip:hover { border-color: var(--terracotta); color: var(--brown); }
+  .p-chip.selected { background: var(--brown); border-color: var(--brown); color: var(--cream); }
+  .p-stepper { display: flex; align-items: center; background: white; border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; width: fit-content; }
+  .p-stepper button { width: 42px; height: 42px; background: none; border: none; font-size: 20px; color: var(--brown); cursor: pointer; transition: background 0.15s; font-weight: 300; }
+  .p-stepper button:hover { background: var(--warm-white); }
+  .p-stepper span { width: 52px; text-align: center; font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-style: italic; color: var(--brown); border-left: 1px solid var(--border); border-right: 1px solid var(--border); line-height: 42px; }
+  .p-season-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .p-season-card { background: white; border: 1.5px solid var(--border); border-radius: 14px; padding: 14px 16px; cursor: pointer; transition: all 0.18s; display: flex; align-items: center; gap: 10px; }
+  .p-season-card:hover { border-color: var(--terracotta); }
+  .p-season-card.selected { background: var(--brown); border-color: var(--brown); }
+  .p-season-card.selected .ps-title { color: var(--cream); }
+  .p-season-card.selected .ps-desc { color: rgba(245,239,230,0.55); }
+  .ps-emoji { font-size: 22px; }
+  .ps-title { font-size: 13px; font-weight: 700; color: var(--brown); margin-bottom: 1px; }
+  .ps-desc { font-size: 11px; color: var(--text-light); }
+  .p-submit { width: 100%; padding: 15px; background: var(--brown); color: var(--cream); border: none; border-radius: 14px; font-family: 'Lato', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; margin-top: 6px; }
+  .p-submit:hover { background: var(--brown-light); }
+  .p-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+  .p-loading { text-align: center; padding: 48px 24px; display: none; }
+  .p-loading.visible { display: block; }
+  .p-dots { display: flex; justify-content: center; gap: 8px; margin-bottom: 14px; }
+  .p-dots span { width: 10px; height: 10px; border-radius: 50%; background: var(--terracotta); animation: pbounce 1.2s infinite; }
+  .p-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .p-dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes pbounce { 0%,80%,100%{transform:scale(0.7);opacity:0.5} 40%{transform:scale(1);opacity:1} }
+  .p-loading-text { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-style: italic; color: var(--brown); margin-bottom: 4px; }
+  .p-loading-sub { font-size: 12px; color: var(--text-light); }
+  .p-result { display: none; }
+  .p-result.visible { display: block; }
+  .p-result-header { background: var(--brown); border-radius: 16px; padding: 22px 26px; margin-bottom: 18px; position: relative; overflow: hidden; }
+  .p-result-header::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse 80% 60% at 20% 50%, rgba(122,158,142,0.2), transparent 60%); }
+  .p-result-badge { position:relative; font-size:9px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:#6ABFAA; margin-bottom:5px; }
+  .p-result-title { position:relative; font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-style:italic; color:var(--cream); margin-bottom:3px; }
+  .p-result-sub { position:relative; font-size:12px; color:rgba(245,239,230,0.5); }
+  .p-edit-btn { position:absolute; top:18px; right:18px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.7); font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:6px 13px; border-radius:999px; cursor:pointer; transition:all 0.2s; font-family:'Lato',sans-serif; }
+  .p-edit-btn:hover { background:rgba(255,255,255,0.2); color:#fff; }
+  .p-day-card { background:white; border:1px solid var(--border); border-radius:16px; overflow:hidden; margin-bottom:14px; }
+  .p-day-header { background:var(--warm-white); padding:13px 20px; display:flex; align-items:center; gap:12px; border-bottom:1px solid var(--border); }
+  .p-day-num { font-family:'Cormorant Garamond',serif; font-size:1.7rem; font-style:italic; color:var(--terracotta); line-height:1; min-width:32px; }
+  .p-day-title { font-size:13.5px; font-weight:700; color:var(--brown); margin-bottom:1px; }
+  .p-day-sub { font-size:11.5px; color:var(--text-light); }
+  .p-day-body { padding:16px 20px; }
+  .p-time-block { display:flex; gap:12px; padding:9px 0; border-bottom:1px solid rgba(44,58,71,0.07); }
+  .p-time-block:last-child { border-bottom:none; }
+  .p-time-label { font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--terracotta); min-width:56px; padding-top:2px; }
+  .p-time-content { flex:1; }
+  .p-time-place { font-size:13.5px; font-weight:700; color:var(--brown); margin-bottom:2px; }
+  .p-time-desc { font-size:13px; color:var(--text-light); line-height:1.65; }
+  .p-time-tip { display:inline-block; margin-top:4px; font-size:11px; color:var(--terracotta); font-style:italic; }
+  @media (max-width:520px) { .p-season-grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 800 340" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <rect width="800" height="340" fill="#141E28"/>
+    <ellipse cx="200" cy="100" rx="340" ry="80" fill="#1D4D3E" opacity="0.45"/>
+    <ellipse cx="420" cy="75" rx="300" ry="55" fill="#1A5C48" opacity="0.3"/>
+    <ellipse cx="600" cy="110" rx="280" ry="65" fill="#2A5C6E" opacity="0.35"/>
+    <ellipse cx="680" cy="60" rx="200" ry="42" fill="#3D6B5E" opacity="0.25"/>
+    <ellipse cx="90" cy="115" rx="190" ry="52" fill="#2C5C4E" opacity="0.28"/>
+    <ellipse cx="310" cy="80" rx="160" ry="22" fill="#4A9E8A" opacity="0.1"/>
+    <ellipse cx="530" cy="74" rx="190" ry="20" fill="#6ABFAA" opacity="0.08"/>
+    <circle cx="42" cy="16" r="1" fill="#fff" opacity="0.55"/>
+    <circle cx="115" cy="9" r="0.8" fill="#fff" opacity="0.4"/>
+    <circle cx="198" cy="24" r="1.1" fill="#fff" opacity="0.5"/>
+    <circle cx="318" cy="7" r="0.9" fill="#fff" opacity="0.35"/>
+    <circle cx="430" cy="17" r="1" fill="#fff" opacity="0.45"/>
+    <circle cx="524" cy="8" r="0.8" fill="#fff" opacity="0.4"/>
+    <circle cx="628" cy="21" r="1" fill="#fff" opacity="0.3"/>
+    <circle cx="722" cy="11" r="1.1" fill="#fff" opacity="0.5"/>
+    <circle cx="776" cy="28" r="0.7" fill="#fff" opacity="0.3"/>
+    <circle cx="80" cy="40" r="0.6" fill="#fff" opacity="0.25"/>
+    <circle cx="490" cy="34" r="0.7" fill="#fff" opacity="0.28"/>
+    <polygon points="0,340 120,130 240,340" fill="#1A2A38" opacity="0.95"/>
+    <polygon points="80,340 270,45 460,340" fill="#162030" opacity="0.92"/>
+    <polygon points="210,340 395,100 580,340" fill="#1E2E3E" opacity="0.88"/>
+    <polygon points="360,340 510,60 660,340" fill="#162030" opacity="0.9"/>
+    <polygon points="500,340 645,105 800,340" fill="#1A2A38" opacity="0.88"/>
+    <polygon points="620,340 760,80 900,340" fill="#1E2E3E" opacity="0.85"/>
+    <line x1="270" y1="45" x2="80" y2="340" stroke="#4A9E8A" stroke-width="0.6" opacity="0.2"/>
+    <line x1="270" y1="45" x2="460" y2="340" stroke="#4A9E8A" stroke-width="0.6" opacity="0.2"/>
+    <line x1="510" y1="60" x2="360" y2="340" stroke="#C4A882" stroke-width="0.5" opacity="0.18"/>
+    <line x1="510" y1="60" x2="660" y2="340" stroke="#C4A882" stroke-width="0.5" opacity="0.18"/>
+    <polygon points="0,340 80,200 160,340" fill="#223344" opacity="0.75"/>
+    <polygon points="140,340 295,165 450,340" fill="#1E3040" opacity="0.7"/>
+    <polygon points="330,340 472,178 614,340" fill="#223344" opacity="0.68"/>
+    <polygon points="530,340 668,170 806,340" fill="#1E3040" opacity="0.72"/>
+    <path d="M0,318 L12,300 L15,318 L26,290 L29,318 L42,295 L45,318 L58,288 L61,318 L76,294 L79,318 L94,298 L97,318 L112,292 L115,318 L131,296 L134,318 L150,290 L153,318 L170,294 L173,318 L191,298 L194,318 L213,292 L216,318 L236,296 L239,318 L259,290 L262,318 L283,294 L286,318 L308,298 L311,318 L334,292 L337,318 L361,296 L364,318 L389,289 L392,318 L417,294 L420,318 L446,297 L449,318 L476,290 L479,318 L507,295 L510,318 L538,298 L541,318 L570,291 L573,318 L603,296 L606,318 L637,289 L640,318 L672,294 L675,318 L708,298 L711,318 L745,291 L748,318 L781,296 L784,318 L800,298 L800,340 L0,340Z" fill="#0D1820"/>
+  </svg>
+  <div class="hero-badge">✦ Welcome to your mountain escape ✦</div>
+  <h1>Stowe Refuge</h1>
+  <div class="hero-sub">Stowe, Vermont</div>
+  <div class="hero-divider"></div>
+</div>
+
+<!-- NAV -->
+<div class="nav-wrap">
+  <nav class="nav">
+    <button class="nav-btn active" onclick="showSection('checkin', this)">Check-in/out</button>
+    <button class="nav-btn" onclick="showSection('wifi', this)">WiFi & Tech</button>
+    <button class="nav-btn" onclick="showSection('amenities', this)">Amenities</button>
+    <button class="nav-btn" onclick="showSection('rules', this)">House Rules</button>
+    <button class="nav-btn" onclick="showSection('local', this)">Eats & Activities</button>
+    <button class="nav-btn" onclick="showSection('emergency', this)">Emergency</button>
+    <button class="nav-btn" onclick="showSection('map-section', this)">🗺️ Map</button>
+    <button class="nav-btn" onclick="showSection('planner-section', this)">🗓️ Trip Planner</button>
+  </nav>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- CHECK-IN / OUT -->
+  <div id="checkin" class="section active">
+    <div class="section-header">
+      <div class="section-icon">🗝️</div>
+      <h2 class="section-title">Check-in & Check-out</h2>
+    </div>
+
+    <div class="highlight">
+      <div class="card-label label">Quick Reference</div>
+      <div class="grid-2">
+        <div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage);margin-bottom:4px;">Check-in</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--brown);font-weight:600;">3:00 PM</div>
+          <div style="font-size:12px;color:var(--text-light);margin-top:2px;">…but you're probably already here 😄</div>
+        </div>
+        <div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage);margin-bottom:4px;">Check-out</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--brown);font-weight:600;">11:00 AM</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Arrival</div>
+      <h3>Getting In</h3>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-time">Step 1 — Door code</div>
+          <div class="timeline-text">The door code is the <strong style="color:var(--terracotta)">last 4 digits of your phone number</strong>. Smart lock — no key needed!</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">Step 2 — Locking up</div>
+          <div class="timeline-text">To lock the door, make sure it's fully closed and press the lock button. Jeff can also lock and unlock remotely if you have any issues.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">Need help?</div>
+          <div class="timeline-text">Send Jeff a message at <strong>(203) 993-4708</strong> — he lives on-site and is happy to help.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Departure</div>
+      <h3>Before You Leave</h3>
+      <ul class="checklist">
+        <li><span class="check-icon">✓</span> Leave all towels on the bathroom floor</li>
+        <li><span class="check-icon">✓</span> Run the dishwasher with any dirty dishes</li>
+        <li><span class="check-icon">✓</span> Bring trash to the trash enclosure (summer) to the right of the building, or to the trash cans on the driveway (winter)</li>
+        <li><span class="check-icon">✓</span> Lock all doors and windows</li>
+        <li><span class="check-icon">✓</span> Message Jeff if you have any questions — hope you enjoyed your stay!</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Parking</div>
+      <h3>Where to Park</h3>
+      <p>Please use the <strong>2–3 spots right in front of the door</strong> first. If you need additional spaces, you can park to the right of the garage. Please park tightly and be conscious of other cars.</p>
+    </div>
+  </div>
+
+  <!-- WIFI & TECH -->
+  <div id="wifi" class="section">
+    <div class="section-header">
+      <div class="section-icon">📶</div>
+      <h2 class="section-title">WiFi & Tech</h2>
+    </div>
+
+    <div class="wifi-box">
+      <div class="card-label label">Internet Access</div>
+      <h3>Connect & Settle In</h3>
+      <div class="wifi-row">
+        <span class="wifi-key">Network</span>
+        <span class="wifi-val">Stowe Refuge</span>
+      </div>
+      <div class="wifi-row">
+        <span class="wifi-key">Password</span>
+        <span class="wifi-val">Skimore123</span>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-label">TV</div>
+        <h3>Living Room TV</h3>
+        <p>Use the <strong>smaller white remote</strong> to control the TV. Netflix is provided — feel free to log in to any of your own accounts too.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Electric Fireplace</div>
+        <h3>Downstairs Fireplace</h3>
+        <p>Use the <strong>larger white remote</strong> to control the electric fireplace. Note: please <strong>do not use the upstairs fireplace</strong>.</p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-label">Thermostats</div>
+        <h3>Two Zones</h3>
+        <p>One thermostat is <strong>to the left of the shelving</strong> (with your back to the large TV). A second is <strong>upstairs on the right</strong> at the end of the hallway before the larger bedroom.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Lights & Lamps</div>
+        <h3>Good to Know</h3>
+        <p><strong>Tap the base</strong> of the small black lamps to turn them on. Note that not all light switches control overhead lights — some may appear to not work.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Entertainment</div>
+      <h3>Record Player, Games & Speakers</h3>
+      <p>The record player, board games, books, and speakers are all yours to enjoy! Please put all game pieces back when you're done — Battleship has a lot of little pieces, so be careful when you open it.</p>
+    </div>
+  </div>
+
+  <!-- AMENITIES -->
+  <div id="amenities" class="section">
+    <div class="section-header">
+      <div class="section-icon">🛋️</div>
+      <h2 class="section-title">Amenities</h2>
+    </div>
+
+    <div class="highlight" style="margin-bottom:20px;">
+      <p style="font-size:14px;color:var(--text-light);font-style:italic;">Please enjoy a rotating selection of Indy's favorite candies in the bowl under the mirror. You will <em>not</em> find dark chocolate or peppermints — we only stock good candies. 🍬</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-label">Fitness</div>
+        <h3>Stay Active</h3>
+        <ul>
+          <li><strong>Treadmill</strong> — always use the safety clip (must be magnetically connected to start)</li>
+          <li><strong>Yoga mat & weights</strong> available for your use</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-label">Outdoor Fire Pit</div>
+        <h3>Evening Fires</h3>
+        <p>Firewood is on the patio and there's a lighter in the kitchen drawer next to the oven. Perfect for a Vermont evening.</p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-label">Grill</div>
+        <h3>BBQ</h3>
+        <p>You're welcome to use the grill — just be sure to <strong>shut off the propane</strong> when you're done.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Front Yard</div>
+        <h3>Your Private Space</h3>
+        <p>The front yard is your private space — feel free to play games, lounge, or have dinner and drinks outside. The backyard behind the garages is off-limits (used by other apartments).</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Supplies</div>
+      <h3>Where Things Are</h3>
+      <ul class="checklist">
+        <li><span class="check-icon">✓</span> Vacuum, broom & cleaning supplies — front hall closet on the left as you walk in</li>
+        <li><span class="check-icon">✓</span> Extra towels, pillows & linens — small closet next to the upstairs bathroom</li>
+        <li><span class="check-icon">✓</span> Boot trays next to the white hall tree — please keep shoes & boots in the entryway</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- HOUSE RULES -->
+  <div id="rules" class="section">
+    <div class="section-header">
+      <div class="section-icon">📋</div>
+      <h2 class="section-title">House Rules</h2>
+    </div>
+
+    <div class="highlight" style="margin-bottom:24px;">
+      <p style="font-size:14.5px;color:var(--text-light);font-style:italic;">"This place is the perfect location for all my favorite activities, and it's such a cozy spot to curl up in when you're tired after a long day." — Indy 🐾</p>
+    </div>
+
+    <div class="card">
+      <div class="rule-row">
+        <span class="rule-emoji">🔇</span>
+        <div class="rule-text"><strong>Quiet Hours: 10pm – 7am</strong><span>Please be respectful of neighbors during quiet hours.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🚭</span>
+        <div class="rule-text"><strong>No Smoking or Vaping</strong><span>No smoking or vaping anywhere on the property.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🎉</span>
+        <div class="rule-text"><strong>No Parties or Events</strong><span>Registered guests only. Maximum occupancy of 6.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🐾</span>
+        <div class="rule-text"><strong>No Pets</strong><span>Indy appreciates your understanding (he has the market cornered).</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🔥</span>
+        <div class="rule-text"><strong>Downstairs Fireplace Only</strong><span>Please do not use the upstairs fireplace. The electric fireplace downstairs is ready to go.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">👟</span>
+        <div class="rule-text"><strong>Shoes in the Entryway</strong><span>Please limit shoes, boots, skis, and bikes to the tiled entryway area.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🔧</span>
+        <div class="rule-text"><strong>Report Any Damage ASAP</strong><span>It's always easier to fix sooner rather than later — no judgment, just let Jeff know.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOCAL TIPS -->
+  <div id="local" class="section">
+    <div class="section-header">
+      <div class="section-icon">🗺️</div>
+      <h2 class="section-title">Eats & Activities</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-label">☕ Breakfast</div>
+      <h3>Breakfast Recommendations</h3>
+      <div class="rule-row">
+        <span class="rule-emoji">☕</span>
+        <div class="rule-text"><strong>The Roastery</strong><span>Hard to beat the convenience (across the street from here) and quality. This is a super small coffee shop, so don't expect to sit down and hang out, but they have some of the best coffee in town and some small bakery items.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🥞</span>
+        <div class="rule-text"><strong>Butler's Pantry</strong><span>Best sit-down breakfast in Stowe and only a minute or two from here. The biscuit french toast is a must try. Butler's Pantry can get crazy busy — I'd highly recommend joining the waitlist on Yelp before you drive over there.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🍵</span>
+        <div class="rule-text"><strong>Woodland Cafe</strong><span>This is the local's coffee stop. Not as good coffee as The Roastery (don't say I said that) but an impressive selection of pastries and a decent seating area.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🔥</span>
+        <div class="rule-text"><strong>Round Hearth</strong><span>One of my favorite ski routines is waking up super early to ski, taking a run or two and sitting around the indoor fire pit here drinking bottomless coffee. Their food is decent but can take a little long when they're busy.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🍩</span>
+        <div class="rule-text"><strong>Cold Hollow Cider Mill Cafe</strong><span>You can't leave without stopping here for cider, donuts and a creemee, but they have some great breakfast options too. For breakfast I always get an egg sandwich on a cheddar biscuit with either maple mayo or cider jam. It's about 15 minutes away.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🏔️</span>
+        <div class="rule-text"><strong>Trapp Family Lodge</strong><span>Skip their big breakfast buffet and opt for the Kaffehaus. Great place to sit outside in the summer.</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">🥙 Lunch</div>
+      <h3>Lunch Recommendations</h3>
+      <div class="rule-row">
+        <span class="rule-emoji">🍕</span>
+        <div class="rule-text"><strong>Piecasso</strong><span>I almost exclusively go here for their slice special — 2 slices and a soda for $8.50. Quick, cheap way to fuel up and keep moving.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🧆</span>
+        <div class="rule-text"><strong>Aladdin</strong><span>Honestly some of the best falafel I've had outside of the Middle East. They're only open for lunch and sometimes they look closed when they're open.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🌯</span>
+        <div class="rule-text"><strong>Ranch Camp</strong><span>Great vibes, bowls, and burritos here. I always get the crunchwrap here. It's a lot of food, but they do a really good job with it. There's a bike shop here as well and it's right next to Cady Hill, which is one of the most popular mountain bike trail networks in Vermont.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🥑</span>
+        <div class="rule-text"><strong>Avocado Pit</strong><span>Quick and easy burrito spot with online ordering. Only a few minutes from home and they have a separate takeout window. I get this a lot when I work from home because it's really convenient. Better burritos than Ranch Camp, but if I'm really hungry I'll usually opt for the Ranch Camp crunchwrap.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🥗</span>
+        <div class="rule-text"><strong>Green Goddess</strong><span>A little more low key than some of the other options, but they have great smoothies, salads, and sandwiches.</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">🍽️ Dinner</div>
+      <h3>Dinner Recommendations</h3>
+      <div class="rule-row">
+        <span class="rule-emoji">🍺</span>
+        <div class="rule-text"><strong>Doc Ponds</strong><span>Upscale bar bites (like many other places in Stowe) but the food is actually good and you can usually join their waitlist on Yelp so you don't have to wait around. They typically have a good food and drink special every night. Docs is expensive for a bar, but not as expensive as a nice restaurant.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🍕</span>
+        <div class="rule-text"><strong>Bench</strong><span>Wide variety of different upscale bar bites with pizza, a great veggie burger, long beer list, and a killer skillet cookie. This place will get packed if it's busy and they shut off takeout orders after ~6pm. Bench is pretty reasonably priced.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🫓</span>
+        <div class="rule-text"><strong>American Flatbread</strong><span>Very inventive pizzas (especially their phenomenal specials) and lots of seating for busy nights. Flatbread is pretty reasonably priced.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🎸</span>
+        <div class="rule-text"><strong>Shakedown Street</strong><span>This is Stowe Cider's BBQ restaurant. They have a fun atmosphere, often have live music, and a great selection of hard cider. The BBQ isn't bad for Vermont. Shakedown Street is pretty reasonably priced to a little expensive.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🦞</span>
+        <div class="rule-text"><strong>Salt and Rind</strong><span>Seafood focused restaurant in downtown Waterbury (15-20 mins away). Unique cocktails and very lively vibes. Pretty small place. It's a little expensive but the food and drinks are good.</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">⭐ Special Occasions</div>
+      <h3>Worth the Splurge</h3>
+      <div class="highlight" style="margin-bottom:16px;margin-top:4px;">
+        <p style="font-size:13.5px;color:var(--text-light);">These are all relatively expensive, but have great food. Most probably need reservations to get a table.</p>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🏡</span>
+        <div class="rule-text"><strong>Edson Hill</strong><span>Stowe's best restaurant in a cozy setting on beautiful grounds. Reservations are pretty much a necessity, but they do have a tavern with a bar that's first come, first served.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🍝</span>
+        <div class="rule-text"><strong>Gallus</strong><span>This is in Waterbury (~15-20 minutes south on 100). Excellent homemade pastas in an old mill building. Great setting on a river with rotating unique pasta shapes and sauces.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🍄</span>
+        <div class="rule-text"><strong>Hen of the Wood</strong><span>Also 15-20 mins away in Waterbury, but this is right downtown. One of the better known restaurants in Vermont. Recently renovated space, great cocktails, ever-changing menu, and local cheese. They usually have a mushroom toast, which I love.</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">🍹 Bars</div>
+      <h3>Bars</h3>
+      <div class="rule-row">
+        <span class="rule-emoji">🍸</span>
+        <div class="rule-text"><strong>Apres</strong><span>Best cocktails (not to be confused with apres only).</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🏠</span>
+        <div class="rule-text"><strong>Burt's</strong><span>Best place to see someone who actually lives here.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🎭</span>
+        <div class="rule-text"><strong>Matterhorn</strong><span>Best place to see someone who just says they live here.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🕺</span>
+        <div class="rule-text"><strong>Alfie's</strong><span>Best place to accidentally go to a rave.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">⛷️</span>
+        <div class="rule-text"><strong>Whistlepig Pavilion at Spruce Peak</strong><span>Best upscale apres ski that's actually good.</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">⛷️ Winter</div>
+      <h3>Winter Activities</h3>
+      <div class="rule-row">
+        <span class="rule-emoji">🎿</span>
+        <div class="rule-text"><strong>Downhill Skiing</strong><span>Stowe is an awesome place to ski and really has something for everyone. Spruce Peak has a variety of beginner terrain, shorter lines, and an upscale base village. The Forerunner quad accesses some of the most challenging terrain on the east coast and the Gondola has everything in between. Be aware that on Friday–Sunday and holidays parking is $30/day at the resort unless you take the shuttle from Toll House or the Cross Country Center. Without traffic we are about 12-15 minutes from the ski area, but on busy days that can take over an hour.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🌲</span>
+        <div class="rule-text"><strong>Backcountry Skiing</strong><span>Sterling Forest and Nebraska Valley both have great gladed areas for backcountry skiing. You can also skin up the resort in the morning and evening. MountainOps has backcountry ski rentals. Your host is an avid backcountry skier, so send me a message for some more detailed information.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🏃</span>
+        <div class="rule-text"><strong>Nordic Skiing</strong><span>Trapp Family Lodge is about 10 minutes away and has pretty extensive nordic ski trails. They have an outdoor center that offers lessons and rentals. If you're up for it, there's a ~rustic~ cabin that's a few mile ski from the outdoor center offering hot food and drinks in the winter. It's usually open until 3pm.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🥾</span>
+        <div class="rule-text"><strong>Snowshoeing</strong><span>Trapp Family Lodge also has snowshoe trails and snowshoes for rent at the outdoor center. Ranch Camp often has free snowshoes available for use in Cady Hill, which is a ~300 acre trail network right in the center of town. The Green Mountain Club in Waterbury on Route 100 will have great recommendations for winter hikes and snowshoes as well.</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">☀️ Summer</div>
+      <h3>Summer Activities</h3>
+      <div class="rule-row">
+        <span class="rule-emoji">🚴</span>
+        <div class="rule-text"><strong>Running and Walking</strong><span>The Stowe rec path is about 5 miles long and winds through town with lots of shops, restaurants, and bars right on the route. It starts from the church in town and ends at Brook Road and is paved the whole way. You can also rent bikes at AJs or Mountain Ops for rec path cruising. Can get pretty busy during the day on a weekend.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🚵</span>
+        <div class="rule-text"><strong>Mountain Biking</strong><span>Stowe Trails Partnership maintains trails in Cady Hill, Adams Camp, and Sterling Forest — all in Stowe. Cady Hill offers the most popular flow trails in Vermont, Adams Camp has more hand-built trails, and Sterling has a more remote feel. Stowetrails.org has lots more information. Ranch Camp has bike rentals that you can reserve online. Your host is an avid mountain biker, so send me a message for some more detailed information.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🥾</span>
+        <div class="rule-text"><strong>Hiking</strong><span>There's lots of great hiking all around Stowe. The Green Mountain Club on Route 100 in Waterbury will be able to provide lots of recommendations, and the app Alltrails also has good suggestions. Mount Mansfield offers a variety of pretty strenuous trails and loops with great views at the summit. Moss Glen Falls is a quick hike to a beautiful waterfall and Sunset Rock is another short hike with a great view.</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">🌧️ Rainy Day</div>
+      <h3>Rainy Day</h3>
+      <div class="rule-row">
+        <span class="rule-emoji">🎿</span>
+        <div class="rule-text"><strong>Ski Museum</strong><span>Stowe has more ski history than you ever expected, and much of it is on display at the ski museum 5 minutes away at the intersection of Route 100 and Mountain Road.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🍩</span>
+        <div class="rule-text"><strong>Cold Hollow Cider Mill</strong><span>Great place to faff around with fresh cider donuts, maple creemees, and cider samples. You will thank me for recommending their crushee (maple creemee - cider slushy mix) with a cider donut. I love shortbread, so the maple shortbread is another favorite of mine. They also have a hard cider tasting room.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🏙️</span>
+        <div class="rule-text"><strong>Church Street</strong><span>About 45 minutes from here is a pedestrian-only street in the heart of Burlington with great shops and restaurants.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🍺</span>
+        <div class="rule-text"><strong>Brewery Hopping</strong><span>There are too many good breweries to visit within an hour of here. Some of my favorites are (in no particular order): The Alchemist (Stowe), Ten Bends (Hyde Park), Foam (Burlington), Four Quarters (Winooski).</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">💎 Hidden Gems</div>
+      <h3>Not in Your Guidebook</h3>
+      <div class="highlight" style="margin-bottom:16px;margin-top:4px;">
+        <p style="font-size:13.5px;color:var(--text-light);">Vermont has so much to offer outside of Google's top 10 things to do in Stowe. Below are some of the hidden gem restaurants, bars and activities. Most of these aren't fancy and aren't in Stowe, but are so worth visiting.</p>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🏅</span>
+        <div class="rule-text"><strong>Craftsbury Outdoor Center</strong><span>Non-profit nordic ski, mountain bike, and rowing facility in Craftsbury. I mostly go here to ski in the winter. Extensive and beautiful trail network that's a little flatter than Trapps and not as touristy. If it's open, skiing on the lake is really cool!</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🏪</span>
+        <div class="rule-text"><strong>Craftsbury Genny</strong><span>While you're in Craftsbury for the outdoor center, stop at the Genny, which is a classic Vermont general store.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🍳</span>
+        <div class="rule-text"><strong>The Village Diner</strong><span>If you're going to Craftsbury to visit the Genny and ski at the outdoor center, you might as well stop for breakfast at the Village Diner. The hashes are the best thing on the menu, but the pancakes are great too. You'll probably get a look when you walk in because they don't recognize you, but it's ok because I do too.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🚴</span>
+        <div class="rule-text"><strong>The Lamoille Valley Rail Trail</strong><span>A gravel rail trail that's somewhere around 100 miles long and goes from Danville to Swanton. You can hop on at the Oxbow Park in downtown Morrisville and bike, walk, or run for many miles. It's pretty flat and I think going East from Morrisville towards Hardwick is one of the most beautiful stretches.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🏔️</span>
+        <div class="rule-text"><strong>Elmore</strong><span>The Elmore Store is a great old general store that was just renovated and has surprisingly good food. It's right on Lake Elmore which has a beach in the summer and ice skating (if conditions are safe) in the winter. You can hike up Mount Elmore and take in a phenomenal 360-degree view from a fire tower. There's a small fee to enter the state park.</span></div>
+      </div>
+      <div class="rule-row">
+        <span class="rule-emoji">🥬</span>
+        <div class="rule-text"><strong>Farmers Markets</strong><span>I hate to say this, but skip the Stowe farmers market and go to Burlington or Montpelier. Stowe is great but can be a bit touristy and both the Burlington and Montpelier markets are in more walkable areas.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMERGENCY -->
+  <div id="emergency" class="section">
+    <div class="section-header">
+      <div class="section-icon">🚨</div>
+      <h2 class="section-title">Emergency Contacts</h2>
+    </div>
+
+    <div class="highlight" style="margin-bottom:24px;">
+      <div class="card-label label">Important</div>
+      <p style="font-size:14.5px;color:var(--text-light);">In case of emergency, call <strong style="color:var(--terracotta);">911</strong> immediately. For anything else, Jeff lives on-site and is happy to help.</p>
+    </div>
+
+    <div class="emergency-card">
+      <div class="emergency-icon red">🚒</div>
+      <div class="emergency-info">
+        <div class="name">Fire / Police / Medical</div>
+        <div class="number">911</div>
+        <div class="note">For all life-threatening emergencies</div>
+      </div>
+    </div>
+
+    <div class="emergency-card">
+      <div class="emergency-icon blue">🏠</div>
+      <div class="emergency-info">
+        <div class="name">Jeff — Your Host (Indy's Dad)</div>
+        <div class="number">(203) 993-4708</div>
+        <div class="note">Lives on-site. Can lock/unlock the door remotely. Happy to help with anything.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAP SECTION -->
+  <div id="map-section" class="section">
+    <div class="map-filters">
+      <button class="map-filter-pill active" data-cat="all" onclick="mapFilter('all',this)">All</button>
+      <button class="map-filter-pill" data-cat="breakfast" onclick="mapFilter('breakfast',this)">☕ Breakfast</button>
+      <button class="map-filter-pill" data-cat="lunch" onclick="mapFilter('lunch',this)">🥙 Lunch</button>
+      <button class="map-filter-pill" data-cat="dinner" onclick="mapFilter('dinner',this)">🍽️ Dinner</button>
+      <button class="map-filter-pill" data-cat="bars" onclick="mapFilter('bars',this)">🍹 Bars</button>
+      <button class="map-filter-pill" data-cat="winter" onclick="mapFilter('winter',this)">⛷️ Winter</button>
+      <button class="map-filter-pill" data-cat="summer" onclick="mapFilter('summer',this)">☀️ Summer</button>
+      <button class="map-filter-pill" data-cat="rainy" onclick="mapFilter('rainy',this)">🌧️ Rainy Day</button>
+      <button class="map-filter-pill" data-cat="gems" onclick="mapFilter('gems',this)">💎 Hidden Gems</button>
+    </div>
+    <div id="map-container">
+      <div id="the-map"></div>
+      <div class="map-panel" id="map-panel">
+        <div class="map-panel-header">
+          <div>
+            <div class="map-panel-cat" id="mp-cat"></div>
+            <div class="map-panel-name" id="mp-name"></div>
+          </div>
+          <button class="map-panel-close" onclick="closeMapPanel()">✕</button>
+        </div>
+        <div class="map-panel-body">
+          <p class="map-panel-desc" id="mp-desc"></p>
+          <div class="map-panel-tip" id="mp-tip" style="display:none"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLANNER SECTION -->
+  <div id="planner-section" class="section planner-section-el">
+    <div class="planner-wrap">
+      <div id="planner-form">
+        <div class="planner-step">
+          <span class="planner-step-label">Step 01</span>
+          <div class="planner-step-title">How many nights are you staying?</div>
+          <div class="p-stepper">
+            <button onclick="pChangeNights(-1)">−</button>
+            <span id="p-nights">3</span>
+            <button onclick="pChangeNights(1)">+</button>
+          </div>
+        </div>
+        <div class="planner-step">
+          <span class="planner-step-label">Step 02</span>
+          <div class="planner-step-title">When are you visiting?</div>
+          <div class="p-season-grid">
+            <div class="p-season-card selected" data-season="winter" onclick="pSelectSeason(this)"><span class="ps-emoji">⛷️</span><div><div class="ps-title">Winter</div><div class="ps-desc">Dec – Mar · Skiing, snowshoeing</div></div></div>
+            <div class="p-season-card" data-season="summer" onclick="pSelectSeason(this)"><span class="ps-emoji">☀️</span><div><div class="ps-title">Summer</div><div class="ps-desc">Jun – Sep · Hiking, biking</div></div></div>
+            <div class="p-season-card" data-season="fall" onclick="pSelectSeason(this)"><span class="ps-emoji">🍂</span><div><div class="ps-title">Fall</div><div class="ps-desc">Sep – Nov · Foliage, hiking</div></div></div>
+            <div class="p-season-card" data-season="spring" onclick="pSelectSeason(this)"><span class="ps-emoji">🌱</span><div><div class="ps-title">Spring</div><div class="ps-desc">Apr – May · Mud season magic</div></div></div>
+          </div>
+        </div>
+        <div class="planner-step">
+          <span class="planner-step-label">Step 03</span>
+          <div class="planner-step-title">What are you into? Pick all that apply.</div>
+          <div class="p-chips">
+            <div class="p-chip selected" data-interest="skiing" onclick="this.classList.toggle('selected')">⛷️ Skiing</div>
+            <div class="p-chip" data-interest="hiking" onclick="this.classList.toggle('selected')">🥾 Hiking</div>
+            <div class="p-chip" data-interest="mountain biking" onclick="this.classList.toggle('selected')">🚵 Mountain Biking</div>
+            <div class="p-chip" data-interest="food and restaurants" onclick="this.classList.toggle('selected')">🍽️ Food & Restaurants</div>
+            <div class="p-chip" data-interest="bars and nightlife" onclick="this.classList.toggle('selected')">🍹 Bars</div>
+            <div class="p-chip" data-interest="breweries" onclick="this.classList.toggle('selected')">🍺 Breweries</div>
+            <div class="p-chip" data-interest="relaxing and cozy" onclick="this.classList.toggle('selected')">🛋️ Relaxing</div>
+            <div class="p-chip" data-interest="nordic skiing or snowshoeing" onclick="this.classList.toggle('selected')">🏃 Nordic / Snowshoe</div>
+            <div class="p-chip" data-interest="exploring local Vermont" onclick="this.classList.toggle('selected')">🗺️ Exploring Vermont</div>
+            <div class="p-chip" data-interest="shopping and browsing" onclick="this.classList.toggle('selected')">🛍️ Shopping</div>
+          </div>
+        </div>
+        <div class="planner-step">
+          <span class="planner-step-label">Step 04</span>
+          <div class="planner-step-title">Who's coming?</div>
+          <div class="p-chips">
+            <div class="p-chip selected" data-group="couple" onclick="pSelectGroup(this)">👫 Couple</div>
+            <div class="p-chip" data-group="family with kids" onclick="pSelectGroup(this)">👨‍👩‍👧 Family</div>
+            <div class="p-chip" data-group="group of friends" onclick="pSelectGroup(this)">👯 Friend Group</div>
+            <div class="p-chip" data-group="solo traveler" onclick="pSelectGroup(this)">🧍 Solo</div>
+          </div>
+        </div>
+        <div class="planner-step">
+          <span class="planner-step-label">Step 05</span>
+          <div class="planner-step-title">Anything else Jeff should know?</div>
+          <textarea id="p-notes" placeholder="e.g. celebrating a birthday, first time in Vermont, vegetarian, want to avoid crowds…"
+            style="width:100%;padding:13px 15px;border:1.5px solid var(--border);border-radius:12px;font-family:'Lato',sans-serif;font-size:13.5px;font-weight:300;color:var(--text);background:white;resize:vertical;min-height:76px;outline:none;transition:border-color 0.2s;"
+            onfocus="this.style.borderColor='var(--terracotta)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+        </div>
+        <button class="p-submit" onclick="pGenerate()">✦ &nbsp; Build My Itinerary</button>
+      </div>
+
+      <div class="p-loading" id="p-loading">
+        <div class="p-dots"><span></span><span></span><span></span></div>
+        <div class="p-loading-text">Planning your perfect Stowe escape…</div>
+        <div class="p-loading-sub">Pulling from Indy's local knowledge</div>
+      </div>
+
+      <div class="p-result" id="p-result">
+        <div class="p-result-header">
+          <div class="p-result-badge">✦ Your Custom Itinerary</div>
+          <div class="p-result-title" id="p-res-title"></div>
+          <div class="p-result-sub" id="p-res-sub"></div>
+          <button class="p-edit-btn" onclick="pReset()">← Edit</button>
+        </div>
+        <div id="p-days"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="footer">
+  <span>Have a wonderful stay ✦</span><br>
+  <span style="font-family:Lato,sans-serif;font-style:normal;font-size:12px;color:rgba(239,246,243,0.35);">From Indy & Jeff — we're so glad you're here.</span>
+</div>
+
+<script>
+  // ── NAV ──
+  let mapInitialized = false;
+
+  function showSection(id, btn) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+    window.scrollTo({ top: 0 });
+    if (id === 'map-section') {
+      if (!mapInitialized) { initMap(); mapInitialized = true; }
+      else { setTimeout(() => theMap.invalidateSize(), 100); }
+    }
+  }
+
+  // ── MAP ──
+  const MCOLORS = { breakfast:'#E8963A', lunch:'#5BA88A', dinner:'#C4623A', bars:'#7A6BAE', winter:'#4A8EC4', summer:'#6AAE4A', rainy:'#8E8E8E', gems:'#C4A82A', home:'#E84A4A' };
+  const MICONS  = { breakfast:'☕', lunch:'🥙', dinner:'🍽️', bars:'🍹', winter:'⛷️', summer:'☀️', rainy:'🌧️', gems:'💎', home:'🏠' };
+  const MCAT_LABELS = { breakfast:'Breakfast', lunch:'Lunch', dinner:'Dinner', bars:'Bars', winter:'Winter Activity', summer:'Summer Activity', rainy:'Rainy Day', gems:'Hidden Gem', home:'Your Home Base' };
+
+  const PLACES = [
+    { name:"Stowe Refuge", cat:"home", lat:44.4830, lng:-72.6616, desc:"Your home base for the perfect Vermont mountain escape.", tip:"Jeff lives next door — text (203) 993-4708 if you need anything." },
+    { name:"The Roastery", cat:"breakfast", lat:44.4830, lng:-72.6616, desc:"Hard to beat the convenience (right across the street) and quality. Super small coffee shop — don't expect to sit down, but some of the best coffee in town.", tip:"🏆 Indy's pick for morning coffee. Grab and go!" },
+    { name:"Butler's Pantry", cat:"breakfast", lat:44.4651, lng:-72.6849, desc:"Best sit-down breakfast in Stowe. The biscuit french toast is a must try. Only a minute or two away.", tip:"⚠️ Join the Yelp waitlist before you drive over — it gets crazy busy." },
+    { name:"Woodland Cafe", cat:"breakfast", lat:44.4707, lng:-72.6865, desc:"The local's coffee stop. Not as good coffee as The Roastery (don't say I said that) but an impressive pastry selection and decent seating.", tip:"Great spot to linger over a pastry." },
+    { name:"Round Hearth", cat:"breakfast", lat:44.4893, lng:-72.7294, desc:"One of my favorite ski routines — take a run or two and sit around the indoor fire pit drinking bottomless coffee.", tip:"🔥 Best enjoyed after an early morning ski run." },
+    { name:"Cold Hollow Cider Mill", cat:"breakfast", lat:44.3813, lng:-72.7200, desc:"Can't leave without stopping for cider, donuts and a creemee. For breakfast always get the egg sandwich on a cheddar biscuit with maple mayo or cider jam. About 15 minutes away.", tip:"🍩 Also great for a rainy day — cider tasting room on site." },
+    { name:"Trapp Family Lodge — Kaffehaus", cat:"breakfast", lat:44.4655, lng:-72.7452, desc:"Skip their big breakfast buffet and opt for the Kaffehaus. Great place to sit outside in the summer.", tip:"Beautiful grounds worth the short drive." },
+    { name:"Piecasso", cat:"lunch", lat:44.4739, lng:-72.7147, desc:"I almost exclusively go here for the slice special — 2 slices and a soda for $8.50. Quick, cheap way to fuel up and keep moving.", tip:"💰 Best value lunch in Stowe, full stop." },
+    { name:"Aladdin", cat:"lunch", lat:44.4747, lng:-72.7145, desc:"Honestly some of the best falafel I've had outside of the Middle East. Only open for lunch and sometimes they look closed when they're open.", tip:"⚠️ Lunch only. Push the door — they're probably open." },
+    { name:"Ranch Camp", cat:"lunch", lat:44.4700, lng:-72.6879, desc:"Great vibes, bowls, and burritos. I always get the crunchwrap. Bike shop on site, right next to Cady Hill trails.", tip:"🚵 Great combo: lunch + rent a bike + ride Cady Hill." },
+    { name:"Avocado Pit", cat:"lunch", lat:44.4650, lng:-72.6853, desc:"Quick and easy burrito spot with online ordering and a separate takeout window. A few minutes from home.", tip:"📱 Order online ahead — the takeout window is super fast." },
+    { name:"Green Goddess", cat:"lunch", lat:44.4584, lng:-72.6941, desc:"A little more low key, but great smoothies, salads, and sandwiches.", tip:"Perfect for a lighter lunch." },
+    { name:"Doc Ponds", cat:"dinner", lat:44.4696, lng:-72.6874, desc:"Upscale bar bites that are actually good. Usually a great food and drink special every night.", tip:"📱 Join the Yelp waitlist so you don't have to wait around." },
+    { name:"Bench", cat:"dinner", lat:44.4720, lng:-72.6881, desc:"Wide variety — pizza, great veggie burger, long beer list, and a killer skillet cookie. Shuts off takeout ~6pm.", tip:"🍪 Don't skip the skillet cookie." },
+    { name:"American Flatbread", cat:"dinner", lat:44.4751, lng:-72.7025, desc:"Very inventive pizzas, especially their phenomenal specials. Lots of seating for busy nights.", tip:"Always ask about the specials." },
+    { name:"Shakedown Street", cat:"dinner", lat:44.4757, lng:-72.7019, desc:"Stowe Cider's BBQ restaurant. Fun atmosphere, often live music, great hard cider selection.", tip:"🎸 Check their schedule — live music nights are a lot of fun." },
+    { name:"Salt and Rind", cat:"dinner", lat:44.3375, lng:-72.7545, desc:"Seafood focused restaurant in downtown Waterbury (15-20 mins). Unique cocktails and very lively vibes.", tip:"🦞 Worth the drive for a special night out." },
+    { name:"Edson Hill", cat:"dinner", lat:44.5110, lng:-72.7346, desc:"Stowe's best restaurant in a cozy setting on beautiful grounds. Reservations are pretty much a necessity, but the tavern bar is first come, first served.", tip:"⭐ Special occasion pick. Book ahead or try the tavern." },
+    { name:"Gallus", cat:"dinner", lat:44.3421, lng:-72.7482, desc:"Excellent homemade pastas in an old mill building in Waterbury (~15-20 mins). Great setting on a river with rotating unique pasta shapes.", tip:"⭐ Rotating pasta shapes and sauces — always something new." },
+    { name:"Hen of the Wood", cat:"dinner", lat:44.3375, lng:-72.7558, desc:"One of the better known restaurants in Vermont, right downtown Waterbury. Ever-changing menu, great cocktails, and they usually have a mushroom toast.", tip:"⭐ Get the mushroom toast. Trust me." },
+    { name:"Apres", cat:"bars", lat:44.4750, lng:-72.7167, desc:"Best cocktails in Stowe (not to be confused with apres only).", tip:"🍸 Go here for cocktails. Best in town." },
+    { name:"Burt's Irish Pub", cat:"bars", lat:44.4763, lng:-72.7187, desc:"Best place to see someone who actually lives here.", tip:"The real locals bar." },
+    { name:"Matterhorn", cat:"bars", lat:44.5019, lng:-72.7559, desc:"Best place to see someone who just says they live here.", tip:"Classic Stowe ski bar scene." },
+    { name:"Alfie's Wild Ride", cat:"bars", lat:44.4739, lng:-72.6969, desc:"Best place to accidentally go to a rave.", tip:"You've been warned. 🕺" },
+    { name:"WhistlePig Pavilion at Spruce Peak", cat:"bars", lat:44.5304, lng:-72.7804, desc:"Best upscale apres ski that's actually good.", tip:"⛷️ Head here right off the mountain." },
+    { name:"Stowe Mountain Resort", cat:"winter", lat:44.5275, lng:-72.7839, desc:"Awesome place to ski with something for everyone. Spruce Peak for beginners, Forerunner quad for expert terrain, Gondola for everything in between.", tip:"🚗 Parking $30/day Fri–Sun — take the shuttle from Toll House to avoid it." },
+    { name:"Trapp Family Lodge Nordic Center", cat:"winter", lat:44.4655, lng:-72.7452, desc:"About 10 minutes away with extensive nordic ski trails, lessons, and rentals. There's a rustic cabin a few miles in with hot food and drinks until 3pm.", tip:"🏃 Great for a mellow ski day." },
+    { name:"Stowe Recreation Path", cat:"summer", lat:44.4786, lng:-72.7240, desc:"About 5 miles long, paved the whole way, winding through town with shops, restaurants, and bars along the route.", tip:"🚴 Rent bikes at AJ's or Mountain Ops." },
+    { name:"Cady Hill — Mountain Biking", cat:"summer", lat:44.4700, lng:-72.6879, desc:"The most popular flow trails in Vermont, maintained by Stowe Trails Partnership. Ranch Camp has bike rentals you can reserve online.", tip:"🚵 Ask Jeff for trail recommendations — he rides here all the time." },
+    { name:"Moss Glen Falls", cat:"summer", lat:44.4820, lng:-72.6240, desc:"A quick hike to a beautiful waterfall. One of the easiest and most rewarding hikes near Stowe.", tip:"Perfect for a morning hike before lunch in town." },
+    { name:"Mount Mansfield", cat:"summer", lat:44.5434, lng:-72.8145, desc:"A variety of strenuous trails with great views at the summit. Haselton Trail and Long Trail are both difficult, steep ways to the ridgeline.", tip:"⚠️ Weather at the summit is often completely different from town — bring layers." },
+    { name:"Vermont Ski & Snowboard Museum", cat:"rainy", lat:44.4652, lng:-72.6878, desc:"Stowe has more ski history than you ever expected. Only 5 minutes away at Route 100 and Mountain Road.", tip:"Great rainy morning activity — usually not crowded." },
+    { name:"The Alchemist Brewery", cat:"rainy", lat:44.4759, lng:-72.7157, desc:"Home of Heady Topper — one of the most famous craft beers in the world. Right here in Stowe.", tip:"🍺 Also try: Ten Bends (Hyde Park), Foam (Burlington), Four Quarters (Winooski)." },
+    { name:"Church Street Burlington", cat:"rainy", lat:44.4784, lng:-73.2128, desc:"About 45 minutes away — a pedestrian-only street in the heart of Burlington with great shops and restaurants.", tip:"🏙️ Make a day of it — add Honey Road, May Day, or Spot on the Dock." },
+    { name:"Craftsbury Genny + Village Diner", cat:"gems", lat:44.6455, lng:-72.4968, desc:"Classic Vermont general store and a local diner for breakfast. The hashes are the best thing on the menu. You'll get a look when you walk in but it's ok.", tip:"💎 Stop here on the way to the Craftsbury Outdoor Center." },
+    { name:"Lake Elmore / Elmore Store", cat:"gems", lat:44.5428, lng:-72.5072, desc:"A great old general store that was just renovated with surprisingly good food. Beach in summer, ice skating in winter. Hike Mount Elmore for a 360° view from a fire tower.", tip:"💎 Small fee to enter the state park. Worth every penny." },
+  ];
+
+  let theMap, mapMarkers = [], mapCat = 'all';
+
+  function makeMIcon(cat) {
+    const color = MCOLORS[cat], icon = MICONS[cat];
+    if (cat === 'home') return L.divIcon({ className:'', html:`<div class="home-marker">${icon}</div>`, iconSize:[36,36], iconAnchor:[18,18] });
+    return L.divIcon({ className:'', html:`<div class="custom-marker" style="background:${color}"><span class="micon">${icon}</span></div>`, iconSize:[30,30], iconAnchor:[15,30] });
+  }
+
+  function openMapPanel(place) {
+    document.getElementById('mp-cat').textContent = MCAT_LABELS[place.cat] || place.cat;
+    document.getElementById('mp-cat').style.color = MCOLORS[place.cat] || '#fff';
+    document.getElementById('mp-name').textContent = place.name;
+    document.getElementById('mp-desc').textContent = place.desc;
+    const tip = document.getElementById('mp-tip');
+    if (place.tip) { tip.textContent = place.tip; tip.style.display = 'block'; } else { tip.style.display = 'none'; }
+    document.getElementById('map-panel').classList.add('open');
+  }
+
+  function closeMapPanel() { document.getElementById('map-panel').classList.remove('open'); }
+
+  function mapFilter(cat, btn) {
+    document.querySelectorAll('.map-filter-pill').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    mapMarkers.forEach(({ marker, place }) => {
+      if (cat === 'all' || place.cat === cat) marker.addTo(theMap); else marker.remove();
+    });
+    closeMapPanel();
+  }
+
+  function initMap() {
+    theMap = L.map('the-map', { center:[44.4830,-72.6616], zoom:14 });
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { subdomains:'abcd', maxZoom:19 }).addTo(theMap);
+    PLACES.forEach(place => {
+      const marker = L.marker([place.lat, place.lng], { icon: makeMIcon(place.cat) }).addTo(theMap);
+      marker.on('click', () => openMapPanel(place));
+      mapMarkers.push({ marker, place });
+    });
+    theMap.on('click', () => closeMapPanel());
+    setTimeout(() => { theMap.invalidateSize(); }, 200);
+  }
+
+  // ── TRIP PLANNER ──
+  let pNights = 3, pSeason = 'winter';
+
+  function pChangeNights(d) { pNights = Math.max(1, Math.min(7, pNights + d)); document.getElementById('p-nights').textContent = pNights; }
+  function pSelectSeason(el) { document.querySelectorAll('.p-season-card').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); pSeason = el.dataset.season; }
+  function pSelectGroup(el) { document.querySelectorAll('.p-chip[data-group]').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); }
+
+  function pReset() {
+    document.getElementById('planner-form').style.display = 'block';
+    document.getElementById('p-result').classList.remove('visible');
+    document.getElementById('p-loading').classList.remove('visible');
+  }
+
+  async function pGenerate() {
+    const interests = [...document.querySelectorAll('.p-chip[data-interest].selected')].map(c => c.dataset.interest);
+    const groupEl = document.querySelector('.p-chip[data-group].selected');
+    const group = groupEl ? groupEl.dataset.group : 'couple';
+    const notes = document.getElementById('p-notes').value;
+    if (!interests.length) { alert('Please select at least one interest!'); return; }
+
+    document.getElementById('planner-form').style.display = 'none';
+    document.getElementById('p-loading').classList.add('visible');
+
+    const prompt = `You are Jeff, the host of Stowe Refuge — a cozy Airbnb in Stowe, Vermont. Create a personalized day-by-day itinerary for guests:
+- Nights: ${pNights}
+- Season: ${pSeason}
+- Interests: ${interests.join(', ')}
+- Group: ${group}
+- Notes: ${notes || 'none'}
+
+Use ONLY these real Stowe places Jeff personally recommends:
+BREAKFAST: The Roastery (best coffee, across the street, grab & go), Butler's Pantry (best sit-down, biscuit french toast, join Yelp waitlist), Woodland Cafe (locals coffee, good pastries), Round Hearth (indoor fire pit, bottomless coffee, great after skiing), Cold Hollow Cider Mill (15 min, egg sandwich cheddar biscuit maple mayo, cider donuts), Trapp Family Lodge Kaffehaus (skip buffet, sit outside in summer)
+LUNCH: Piecasso (2 slices + soda $8.50), Aladdin (best falafel, lunch only, looks closed when open), Ranch Camp (crunchwrap, bike rentals, next to Cady Hill), Avocado Pit (quick burritos, online ordering), Green Goddess (smoothies, salads, low key)
+DINNER: Doc Ponds (upscale bar bites, Yelp waitlist, nightly specials), Bench (pizza, veggie burger, skillet cookie), American Flatbread (inventive pizzas, great specials), Shakedown Street (Stowe Cider BBQ, live music), Salt and Rind (seafood, Waterbury 15-20 min)
+SPECIAL DINNER: Edson Hill (Stowe's best, reservations, tavern walk-in), Gallus (homemade pasta, old mill Waterbury), Hen of the Wood (famous Vermont restaurant, mushroom toast)
+BARS: Apres (best cocktails), Burt's (real locals), Matterhorn (ski bar scene), Alfie's (accidentally go to a rave), Whistlepig Pavilion (best upscale apres ski)
+WINTER: Stowe Mountain Resort (12-15 min, $30 parking Fri-Sun, take shuttle from Toll House), Trapp Nordic (10 min, trails+rentals, rustic cabin 3mi), Craftsbury Outdoor Center (hidden gem, flatter, less touristy), backcountry at Sterling Forest and Nebraska Valley
+SUMMER: Stowe Rec Path (5 miles paved, bike rentals AJ's or Mountain Ops), Cady Hill mountain biking (Ranch Camp rentals), Mount Mansfield (strenuous, amazing views, bring layers), Moss Glen Falls (easy waterfall hike), Lamoille Valley Rail Trail (hop on at Oxbow Park Morrisville)
+RAINY DAY: Stowe Ski Museum (5 min), Cold Hollow Cider Mill (crushee=maple creemee+cider slushy, maple shortbread, cider tasting), Church Street Burlington (45 min), Alchemist + Ten Bends + Foam + Four Quarters breweries
+HIDDEN GEMS: Craftsbury Genny + Village Diner (hashes are best), Lake Elmore + Elmore Store (renovated, good food, fire tower hike), Burlington: Honey Road, May Day, Santiago's, Pho Hong (BYOB Vietnamese)
+
+Respond ONLY with valid JSON, no markdown, no backticks:
+{"title":"catchy 4-6 word trip title","subtitle":"one sentence description","days":[{"day":1,"theme":"evocative day theme","subtitle":"one line day description","schedule":[{"time":"Morning","place":"Place Name","desc":"2-3 sentences in Jeff's warm personal voice with specific tips like what to order","tip":"one quick insider tip or null"}]}]}
+Time slots: Morning, Midday, Afternoon, Evening, Night (3-5 slots per day). Make each day distinct. Write like a knowledgeable friend.`;
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:4000, messages:[{role:'user',content:prompt}] })
+      });
+      const data = await res.json();
+      const text = data.content.map(i => i.text||'').join('');
+      const plan = JSON.parse(text.replace(/```json|```/g,'').trim());
+      document.getElementById('p-loading').classList.remove('visible');
+      pRenderPlan(plan);
+    } catch(err) {
+      document.getElementById('p-loading').classList.remove('visible');
+      document.getElementById('planner-form').style.display = 'block';
+      alert('Something went wrong — please try again!');
+    }
+  }
+
+  function pRenderPlan(plan) {
+    document.getElementById('p-res-title').textContent = plan.title;
+    document.getElementById('p-res-sub').textContent = plan.subtitle;
+    const container = document.getElementById('p-days');
+    container.innerHTML = '';
+    plan.days.forEach(day => {
+      const card = document.createElement('div');
+      card.className = 'p-day-card';
+      const schedule = day.schedule.map(s => `
+        <div class="p-time-block">
+          <div class="p-time-label">${s.time}</div>
+          <div class="p-time-content">
+            <div class="p-time-place">${s.place}</div>
+            <div class="p-time-desc">${s.desc}</div>
+            ${s.tip ? `<span class="p-time-tip">💡 ${s.tip}</span>` : ''}
+          </div>
+        </div>`).join('');
+      card.innerHTML = `
+        <div class="p-day-header">
+          <div class="p-day-num">${day.day}</div>
+          <div><div class="p-day-title">${day.theme}</div><div class="p-day-sub">${day.subtitle}</div></div>
+        </div>
+        <div class="p-day-body">${schedule}</div>`;
+      container.appendChild(card);
+    });
+    document.getElementById('p-result').classList.add('visible');
+    document.querySelector('.content').scrollIntoView({ behavior:'smooth', block:'start' });
+  }
+</script>
+
+</body>
+</html>
