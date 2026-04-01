@@ -859,7 +859,7 @@
       </div>
       <div class="rule-row">
         <span class="rule-emoji">🎭</span>
-        <div class="rule-text"><strong>Matterhorn</strong><span>Best place to see someone who just says they live here.</span></div>
+        <div class="rule-text"><strong>Matterhorn</strong><span>The classic Stowe apres ski bar.</span></div>
       </div>
       <div class="rule-row">
         <span class="rule-emoji">🕺</span>
@@ -946,7 +946,7 @@
       </div>
       <div class="rule-row">
         <span class="rule-emoji">🍳</span>
-        <div class="rule-text"><strong>The Village Diner</strong><span>If you're going to Craftsbury to visit the Genny and ski at the outdoor center, you might as well stop for breakfast at the Village Diner. The hashes are the best thing on the menu, but the pancakes are great too. You'll probably get a look when you walk in because they don't recognize you, but it's ok because I do too.</span></div>
+        <div class="rule-text"><strong>The Village Diner</strong><span>If you're going to Craftsbury to visit the Genny and ski at the outdoor center, you might as well stop for breakfast at the Village Diner in Hardwick. The hashes are the best thing on the menu, but the pancakes are great too. You'll probably get a look when you walk in because they don't recognize you, but it's ok because I do too.</span></div>
       </div>
       <div class="rule-row">
         <span class="rule-emoji">🚴</span>
@@ -958,7 +958,7 @@
       </div>
       <div class="rule-row">
         <span class="rule-emoji">🥬</span>
-        <div class="rule-text"><strong>Farmers Markets</strong><span>I hate to say this, but skip the Stowe farmers market and go to Burlington or Montpelier. Stowe is great but can be a bit touristy and both the Burlington and Montpelier markets are in more walkable areas.</span></div>
+        <div class="rule-text"><strong>Farmers Markets</strong><span>Check out the Burlington or Montpelier farmers markets. Stowe is great but can be a bit touristy and both the Burlington and Montpelier markets are in more walkable areas.</span></div>
       </div>
     </div>
   </div>
@@ -1057,41 +1057,50 @@
 
   const PLACES = [
     { name:"Stowe Refuge", cat:"home", lat:44.4830, lng:-72.6616, desc:"Your home base for the perfect Vermont mountain escape.", tip:"Jeff lives next door — text (203) 993-4708 if you need anything." },
-    { name:"The Roastery", cat:"breakfast", lat:44.4830, lng:-72.6616, desc:"Hard to beat the convenience (right across the street) and quality. Super small coffee shop — don't expect to sit down, but some of the best coffee in town.", tip:"🏆 Indy's pick for morning coffee. Grab and go!" },
-    { name:"Butler's Pantry", cat:"breakfast", lat:44.4651, lng:-72.6849, desc:"Best sit-down breakfast in Stowe. The biscuit french toast is a must try. Only a minute or two away.", tip:"⚠️ Join the Yelp waitlist before you drive over — it gets crazy busy." },
+    { name:"The Roastery", cat:"breakfast", lat:44.4830, lng:-72.6616, desc:"Hard to beat the convenience (right across the street) and quality. Super small coffee shop — don't expect to sit down, but some of the best coffee in town.", tip:"Indy's pick for morning coffee. Grab and go!" },
+    { name:"Butler's Pantry", cat:"breakfast", lat:44.4651, lng:-72.6849, desc:"Best sit-down breakfast in Stowe. The biscuit french toast is a must try. Only a minute or two away.", tip:"Join the Yelp waitlist before you drive over — it gets crazy busy." },
     { name:"Woodland Cafe", cat:"breakfast", lat:44.4707, lng:-72.6865, desc:"The local's coffee stop. Not as good coffee as The Roastery (don't say I said that) but an impressive pastry selection and decent seating.", tip:"Great spot to linger over a pastry." },
-    { name:"Round Hearth", cat:"breakfast", lat:44.4893, lng:-72.7294, desc:"One of my favorite ski routines — take a run or two and sit around the indoor fire pit drinking bottomless coffee.", tip:"🔥 Best enjoyed after an early morning ski run." },
-    { name:"Cold Hollow Cider Mill", cat:"breakfast", lat:44.3813, lng:-72.7200, desc:"Can't leave without stopping for cider, donuts and a creemee. For breakfast always get the egg sandwich on a cheddar biscuit with maple mayo or cider jam. About 15 minutes away.", tip:"🍩 Also great for a rainy day — cider tasting room on site." },
+    { name:"Round Hearth", cat:"breakfast", lat:44.4893, lng:-72.7294, desc:"One of my favorite ski routines — take a run or two and sit around the indoor fire pit drinking bottomless coffee.", tip:"Best enjoyed after an early morning ski run." },
+    { name:"Cold Hollow Cider Mill", cat:"breakfast", lat:44.3813, lng:-72.7200, desc:"Can't leave without stopping for cider, donuts and a creemee. For breakfast always get the egg sandwich on a cheddar biscuit with maple mayo or cider jam. About 15 minutes away.", tip:"Also great for a rainy day — cider tasting room on site." },
     { name:"Trapp Family Lodge — Kaffehaus", cat:"breakfast", lat:44.4655, lng:-72.7452, desc:"Skip their big breakfast buffet and opt for the Kaffehaus. Great place to sit outside in the summer.", tip:"Beautiful grounds worth the short drive." },
-    { name:"Piecasso", cat:"lunch", lat:44.4739, lng:-72.7147, desc:"I almost exclusively go here for the slice special — 2 slices and a soda for $8.50. Quick, cheap way to fuel up and keep moving.", tip:"💰 Best value lunch in Stowe, full stop." },
-    { name:"Aladdin", cat:"lunch", lat:44.4747, lng:-72.7145, desc:"Honestly some of the best falafel I've had outside of the Middle East. Only open for lunch and sometimes they look closed when they're open.", tip:"⚠️ Lunch only. Push the door — they're probably open." },
-    { name:"Ranch Camp", cat:"lunch", lat:44.4700, lng:-72.6879, desc:"Great vibes, bowls, and burritos. I always get the crunchwrap. Bike shop on site, right next to Cady Hill trails.", tip:"🚵 Great combo: lunch + rent a bike + ride Cady Hill." },
-    { name:"Avocado Pit", cat:"lunch", lat:44.4650, lng:-72.6853, desc:"Quick and easy burrito spot with online ordering and a separate takeout window. A few minutes from home.", tip:"📱 Order online ahead — the takeout window is super fast." },
+    { name:"Piecasso", cat:"lunch", lat:44.4739, lng:-72.7147, desc:"I almost exclusively go here for the slice special — 2 slices and a soda for $8.50. Quick, cheap way to fuel up and keep moving.", tip:"Best value lunch in Stowe, full stop." },
+    { name:"Aladdin", cat:"lunch", lat:44.4747, lng:-72.7145, desc:"Honestly some of the best falafel I've had outside of the Middle East. Only open for lunch and sometimes they look closed when they're open.", tip:"Lunch only. Push the door — they're probably open." },
+    { name:"Ranch Camp", cat:"lunch", lat:44.4700, lng:-72.6879, desc:"Great vibes, bowls, and burritos. I always get the crunchwrap. Bike shop on site, right next to Cady Hill trails.", tip:"Great combo: lunch + rent a bike + ride Cady Hill." },
+    { name:"Avocado Pit", cat:"lunch", lat:44.4650, lng:-72.6853, desc:"Quick and easy burrito spot with online ordering and a separate takeout window. A few minutes from home.", tip:"Order online ahead — the takeout window is super fast." },
     { name:"Green Goddess", cat:"lunch", lat:44.4584, lng:-72.6941, desc:"A little more low key, but great smoothies, salads, and sandwiches.", tip:"Perfect for a lighter lunch." },
-    { name:"Doc Ponds", cat:"dinner", lat:44.4696, lng:-72.6874, desc:"Upscale bar bites that are actually good. Usually a great food and drink special every night.", tip:"📱 Join the Yelp waitlist so you don't have to wait around." },
-    { name:"Bench", cat:"dinner", lat:44.4720, lng:-72.6881, desc:"Wide variety — pizza, great veggie burger, long beer list, and a killer skillet cookie. Shuts off takeout ~6pm.", tip:"🍪 Don't skip the skillet cookie." },
+    { name:"Doc Ponds", cat:"dinner", lat:44.4696, lng:-72.6874, desc:"Upscale bar bites that are actually good. Usually a great food and drink special every night.", tip:"Join the Yelp waitlist so you don't have to wait around." },
+    { name:"Bench", cat:"dinner", lat:44.4720, lng:-72.6881, desc:"Wide variety — pizza, great veggie burger, long beer list, and a killer skillet cookie. Shuts off takeout ~6pm.", tip:"Don't skip the skillet cookie." },
     { name:"American Flatbread", cat:"dinner", lat:44.4751, lng:-72.7025, desc:"Very inventive pizzas, especially their phenomenal specials. Lots of seating for busy nights.", tip:"Always ask about the specials." },
-    { name:"Shakedown Street", cat:"dinner", lat:44.4757, lng:-72.7019, desc:"Stowe Cider's BBQ restaurant. Fun atmosphere, often live music, great hard cider selection.", tip:"🎸 Check their schedule — live music nights are a lot of fun." },
-    { name:"Salt and Rind", cat:"dinner", lat:44.3375, lng:-72.7545, desc:"Seafood focused restaurant in downtown Waterbury (15-20 mins). Unique cocktails and very lively vibes.", tip:"🦞 Worth the drive for a special night out." },
-    { name:"Edson Hill", cat:"dinner", lat:44.5110, lng:-72.7346, desc:"Stowe's best restaurant in a cozy setting on beautiful grounds. Reservations are pretty much a necessity, but the tavern bar is first come, first served.", tip:"⭐ Special occasion pick. Book ahead or try the tavern." },
-    { name:"Gallus", cat:"dinner", lat:44.3421, lng:-72.7482, desc:"Excellent homemade pastas in an old mill building in Waterbury (~15-20 mins). Great setting on a river with rotating unique pasta shapes.", tip:"⭐ Rotating pasta shapes and sauces — always something new." },
-    { name:"Hen of the Wood", cat:"dinner", lat:44.3375, lng:-72.7558, desc:"One of the better known restaurants in Vermont, right downtown Waterbury. Ever-changing menu, great cocktails, and they usually have a mushroom toast.", tip:"⭐ Get the mushroom toast. Trust me." },
-    { name:"Apres", cat:"bars", lat:44.4750, lng:-72.7167, desc:"Best cocktails in Stowe (not to be confused with apres only).", tip:"🍸 Go here for cocktails. Best in town." },
+    { name:"Shakedown Street", cat:"dinner", lat:44.4757, lng:-72.7019, desc:"Stowe Cider's BBQ restaurant. Fun atmosphere, often live music, great hard cider selection.", tip:"Check their schedule — live music nights are a lot of fun." },
+    { name:"Salt and Rind", cat:"dinner", lat:44.3375, lng:-72.7545, desc:"Seafood focused restaurant in downtown Waterbury (15-20 mins). Unique cocktails and very lively vibes.", tip:"Worth the drive for a special night out." },
+    { name:"Edson Hill", cat:"dinner", lat:44.5110, lng:-72.7346, desc:"Stowe's best restaurant in a cozy setting on beautiful grounds. Reservations are pretty much a necessity, but the tavern bar is first come, first served.", tip:"Special occasion pick. Book ahead or try the tavern." },
+    { name:"Gallus", cat:"dinner", lat:44.3421, lng:-72.7482, desc:"Excellent homemade pastas in an old mill building in Waterbury (~15-20 mins). Great setting on a river with rotating unique pasta shapes.", tip:"Rotating pasta shapes and sauces — always something new." },
+    { name:"Hen of the Wood", cat:"dinner", lat:44.3375, lng:-72.7558, desc:"One of the better known restaurants in Vermont, right downtown Waterbury. Ever-changing menu, great cocktails, and they usually have a mushroom toast.", tip:"Get the mushroom toast. Trust me." },
+    { name:"Apres", cat:"bars", lat:44.4750, lng:-72.7167, desc:"Best cocktails in Stowe (not to be confused with apres only).", tip:"Go here for cocktails. Best in town." },
     { name:"Burt's Irish Pub", cat:"bars", lat:44.4763, lng:-72.7187, desc:"Best place to see someone who actually lives here.", tip:"The real locals bar." },
-    { name:"Matterhorn", cat:"bars", lat:44.5019, lng:-72.7559, desc:"Best place to see someone who just says they live here.", tip:"Classic Stowe ski bar scene." },
-    { name:"Alfie's Wild Ride", cat:"bars", lat:44.4739, lng:-72.6969, desc:"Best place to accidentally go to a rave.", tip:"You've been warned. 🕺" },
-    { name:"WhistlePig Pavilion at Spruce Peak", cat:"bars", lat:44.5304, lng:-72.7804, desc:"Best upscale apres ski that's actually good.", tip:"⛷️ Head here right off the mountain." },
-    { name:"Stowe Mountain Resort", cat:"winter", lat:44.5275, lng:-72.7839, desc:"Awesome place to ski with something for everyone. Spruce Peak for beginners, Forerunner quad for expert terrain, Gondola for everything in between.", tip:"🚗 Parking $30/day Fri–Sun — take the shuttle from Toll House to avoid it." },
-    { name:"Trapp Family Lodge Nordic Center", cat:"winter", lat:44.4655, lng:-72.7452, desc:"About 10 minutes away with extensive nordic ski trails, lessons, and rentals. There's a rustic cabin a few miles in with hot food and drinks until 3pm.", tip:"🏃 Great for a mellow ski day." },
-    { name:"Stowe Recreation Path", cat:"summer", lat:44.4786, lng:-72.7240, desc:"About 5 miles long, paved the whole way, winding through town with shops, restaurants, and bars along the route.", tip:"🚴 Rent bikes at AJ's or Mountain Ops." },
-    { name:"Cady Hill — Mountain Biking", cat:"summer", lat:44.4700, lng:-72.6879, desc:"The most popular flow trails in Vermont, maintained by Stowe Trails Partnership. Ranch Camp has bike rentals you can reserve online.", tip:"🚵 Ask Jeff for trail recommendations — he rides here all the time." },
+    { name:"Matterhorn", cat:"bars", lat:44.5019, lng:-72.7559, desc:"The classic Stowe apres ski bar.", tip:"Classic Stowe ski bar scene." },
+    { name:"Alfie's Wild Ride", cat:"bars", lat:44.4739, lng:-72.6969, desc:"Best place to accidentally go to a rave.", tip:"You've been warned." },
+    { name:"WhistlePig Pavilion at Spruce Peak", cat:"bars", lat:44.5304, lng:-72.7804, desc:"Best upscale apres ski that's actually good.", tip:"Head here right off the mountain." },
+    { name:"Stowe Mountain Resort", cat:"winter", lat:44.5275, lng:-72.7839, desc:"Awesome place to ski with something for everyone. Spruce Peak for beginners, Forerunner quad for expert terrain, Gondola for everything in between.", tip:"Parking $30/day Fri-Sun — take the shuttle from Toll House to avoid it." },
+    { name:"Trapp Family Lodge Nordic Center", cat:"winter", lat:44.4655, lng:-72.7452, desc:"About 10 minutes away with extensive nordic ski trails, lessons, and rentals. There's a rustic cabin a few miles in with hot food and drinks until 3pm.", tip:"Great for a mellow ski day." },
+    { name:"Craftsbury Outdoor Center", cat:"winter", lat:44.6804, lng:-72.3635, desc:"Non-profit nordic ski facility in Craftsbury. Beautiful trail network, flatter than Trapps, not as touristy. Skiing on the lake is really cool if it's open!", tip:"Hidden gem — worth the drive. Stop at the Genny while you're there." },
+    { name:"Stowe Recreation Path", cat:"summer", lat:44.4786, lng:-72.7240, desc:"About 5 miles long, paved the whole way, winding through town with shops, restaurants, and bars along the route.", tip:"Rent bikes at AJ's or Mountain Ops." },
+    { name:"Cady Hill Forest", cat:"summer", lat:44.4732, lng:-72.6950, desc:"The most popular flow trails in Vermont, maintained by Stowe Trails Partnership. Right in the center of town.", tip:"Ask Jeff for trail recommendations — he rides here all the time." },
+    { name:"Adams Camp", cat:"summer", lat:44.4700, lng:-72.6879, desc:"More hand-built trails than Cady Hill with a different feel. Also maintained by Stowe Trails Partnership.", tip:"Great option once you've ridden Cady Hill." },
+    { name:"Sterling Forest", cat:"summer", lat:44.5419, lng:-72.7198, desc:"More remote feel than Cady Hill or Adams Camp. Great for a quieter ride.", tip:"Worth the short drive up the mountain." },
     { name:"Moss Glen Falls", cat:"summer", lat:44.4820, lng:-72.6240, desc:"A quick hike to a beautiful waterfall. One of the easiest and most rewarding hikes near Stowe.", tip:"Perfect for a morning hike before lunch in town." },
-    { name:"Mount Mansfield", cat:"summer", lat:44.5434, lng:-72.8145, desc:"A variety of strenuous trails with great views at the summit. Haselton Trail and Long Trail are both difficult, steep ways to the ridgeline.", tip:"⚠️ Weather at the summit is often completely different from town — bring layers." },
+    { name:"Mount Mansfield", cat:"summer", lat:44.5434, lng:-72.8145, desc:"A variety of strenuous trails with great views at the summit. The Haselton Trail and Long Trail are both difficult, steep ways to the ridgeline.", tip:"Weather at the summit can be completely different from town — bring layers." },
+    { name:"Sunset Rock", cat:"summer", lat:44.4650, lng:-72.6820, desc:"A short hike with a great view over Stowe. Much easier than Mansfield but still very rewarding.", tip:"Great option for a quick morning hike." },
+    { name:"Lamoille Valley Rail Trail", cat:"summer", lat:44.5652, lng:-72.5875, desc:"About 100 miles of gravel trail from Danville to Swanton. Hop on at Oxbow Park in Morrisville — going east toward Hardwick is one of the most beautiful stretches.", tip:"Pretty flat — great for a relaxed ride of any length." },
     { name:"Vermont Ski & Snowboard Museum", cat:"rainy", lat:44.4652, lng:-72.6878, desc:"Stowe has more ski history than you ever expected. Only 5 minutes away at Route 100 and Mountain Road.", tip:"Great rainy morning activity — usually not crowded." },
-    { name:"The Alchemist Brewery", cat:"rainy", lat:44.4759, lng:-72.7157, desc:"Home of Heady Topper — one of the most famous craft beers in the world. Right here in Stowe.", tip:"🍺 Also try: Ten Bends (Hyde Park), Foam (Burlington), Four Quarters (Winooski)." },
-    { name:"Church Street Burlington", cat:"rainy", lat:44.4784, lng:-73.2128, desc:"About 45 minutes away — a pedestrian-only street in the heart of Burlington with great shops and restaurants.", tip:"🏙️ Make a day of it — add Honey Road, May Day, or Spot on the Dock." },
-    { name:"Craftsbury Genny + Village Diner", cat:"gems", lat:44.6455, lng:-72.4968, desc:"Classic Vermont general store and a local diner for breakfast. The hashes are the best thing on the menu. You'll get a look when you walk in but it's ok.", tip:"💎 Stop here on the way to the Craftsbury Outdoor Center." },
-    { name:"Lake Elmore / Elmore Store", cat:"gems", lat:44.5428, lng:-72.5072, desc:"A great old general store that was just renovated with surprisingly good food. Beach in summer, ice skating in winter. Hike Mount Elmore for a 360° view from a fire tower.", tip:"💎 Small fee to enter the state park. Worth every penny." },
+    { name:"The Alchemist Brewery", cat:"rainy", lat:44.4759, lng:-72.7157, desc:"Home of Heady Topper — one of the most famous craft beers in the world. Right here in Stowe.", tip:"Also try: Ten Bends (Hyde Park), Foam (Burlington), Four Quarters (Winooski)." },
+    { name:"Church Street Burlington", cat:"rainy", lat:44.4784, lng:-73.2128, desc:"About 45 minutes away — a pedestrian-only street in the heart of Burlington with great shops and restaurants.", tip:"Make a day of it — add Honey Road, May Day, or Spot on the Dock." },
+    { name:"Craftsbury Outdoor Center", cat:"gems", lat:44.6804, lng:-72.3635, desc:"Non-profit nordic ski, mountain bike, and rowing facility. Extensive trail network, less touristy than Trapps. Skiing on the lake is really cool if it's open!", tip:"Worth the drive — a true hidden gem." },
+    { name:"The Genny — Craftsbury General Store", cat:"gems", lat:44.6345, lng:-72.3720, desc:"A classic Vermont general store in Craftsbury. Stop here while you're visiting the Outdoor Center.", tip:"The real Vermont experience. Pick up snacks for the trail." },
+    { name:"The Village Diner — Craftsbury", cat:"gems", lat:44.6804, lng:-72.3635, desc:"If you're going to Craftsbury to visit the Genny and ski at the outdoor center, you might as well stop for breakfast at the Village Diner in Hardwick. The hashes are the best thing on the menu, but the pancakes are great too. You'll probably get a look when you walk in because they don't recognize you, but it's ok because I do too.", tip:"Order the hash. Trust me." },
+    { name:"Lamoille Valley Rail Trail — Morrisville", cat:"gems", lat:44.5652, lng:-72.5875, desc:"Hop on at Oxbow Park in downtown Morrisville. Going east toward Hardwick is one of the most beautiful stretches of the ~100 mile trail.", tip:"Pretty flat and gorgeous — great for any fitness level." },
+    { name:"Elmore Store", cat:"gems", lat:44.5404, lng:-72.5233, desc:"A great old general store that was just renovated with surprisingly good food. Right on Lake Elmore.", tip:"Step out onto the back patio for the view of the lake." },
+    { name:"Elmore State Park", cat:"gems", lat:44.5445, lng:-72.5278, desc:"Lake Elmore has a beach in summer and ice skating in winter. Hike Mount Elmore for a phenomenal 360-degree view from a fire tower. Small fee to enter.", tip:"Combine the beach, store, and fire tower hike into a perfect day trip." },
   ];
 
   let theMap, mapMarkers = [], mapCat = 'all';
